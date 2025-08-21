@@ -94,8 +94,8 @@ public class Activity {
     public TypeActivity getTypeActivity() {
         return typeActivity;
     }
-    public void setTypeActivity(TypeActiviy typeActivity){
-        this.typeActivity = typeActivity
+    public void setTypeActivity(TypeActivity typeActivity) {
+        this.typeActivity = typeActivity;
     }
 
     public LocalDateTime getCreatedAt() {
