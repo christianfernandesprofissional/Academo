@@ -7,7 +7,7 @@ import org.hibernate.annotations.UpdateTimestamp;
 import java.time.LocalDateTime;
 
 @Entity
-@Table(name="tb_typeActivities")
+@Table(name="tb_type_activities")
 public class TypeActivity {
     // id, name, description, userid, createdAt, updatedAt
     @Id
