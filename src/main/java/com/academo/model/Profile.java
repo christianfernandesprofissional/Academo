@@ -21,17 +21,17 @@ public class Profile {
     }
 
     @Id
-    @GeneratedValue(strategy= GenerationType.SEQUENCE)
-    @Column(name="Id")
+    @GeneratedValue(strategy= GenerationType.IDENTITY)
+    @Column(name="id")
     private int id;
 
     @Column(name="name")
     private String fullName;
 
-    @Column(name="CreatedAt")
+    @Column(name="created_at")
     private LocalDateTime createdAt;
 
-    @Column(name="UpdatedAt")
+    @Column(name="updated_at")
     private LocalDateTime updatedAt;
 
     public int getId() {
