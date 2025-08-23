@@ -32,6 +32,7 @@ public class User {
     @UpdateTimestamp
     private LocalDateTime updatedAt;
 
+    @Column(name = "is_active", columnDefinition = "default false")
     private Boolean isActive;
 
     public Integer getId() {
