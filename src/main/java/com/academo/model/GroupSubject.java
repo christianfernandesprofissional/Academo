@@ -5,6 +5,7 @@ import jakarta.persistence.*;
 @Entity
 @Table(name = "tb_groups_subjects")
 public class GroupSubject {
+
     @EmbeddedId
     private GroupSubjectPK groupSubjectPK = new GroupSubjectPK();
     @ManyToOne
@@ -23,5 +24,4 @@ public class GroupSubject {
     public void setGroupSubjectPK(GroupSubjectPK groupSubjectPK) {
         this.groupSubjectPK = groupSubjectPK;
     }
-
 }

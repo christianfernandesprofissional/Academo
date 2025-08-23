@@ -36,8 +36,11 @@ public class Subject {
     @UpdateTimestamp
     private LocalDateTime updatedAt;
 
-    @OneToMany(mappedBy = "subject")
-    private List<GroupSubject> groupList;
+//    @OneToMany(mappedBy = "subject")
+//    private List<GroupSubject> groupList;
+
+    @ManyToMany(mappedBy = "subjects")
+    private List<Group> groups;
 
     public Subject() {
     }
@@ -98,13 +101,13 @@ public class Subject {
         this.updatedAt = updatedAt;
     }
 
-    public List<GroupSubject> getGroupList() {
-        return groupList;
-    }
-
-    public void setGroupList(List<GroupSubject> groupList) {
-        this.groupList = groupList;
-    }
+//    public List<GroupSubject> getGroupList() {
+//        return groupList;
+//    }
+//
+//    public void setGroupList(List<GroupSubject> groupList) {
+//        this.groupList = groupList;
+//    }
 
     @Override
     public boolean equals(Object o) {
