@@ -19,7 +19,7 @@ public class UserServiceImpl implements IUserService {
     }
 
     @Override
-    public User findById() {
+    public User findById(Integer id) {
         return null;
     }
 
