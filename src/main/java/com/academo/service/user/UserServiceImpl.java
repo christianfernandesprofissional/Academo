@@ -24,12 +24,12 @@ public class UserServiceImpl implements IUserService {
     }
 
     @Override
-    public void create(User user) {
-
+    public User create(User user) {
+        return null;
     }
 
     @Override
-    public void update(User user) {
-
+    public User update(User user) {
+        return null;
     }
 }

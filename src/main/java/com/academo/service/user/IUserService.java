@@ -8,6 +8,6 @@ public interface IUserService {
 
     public List<User> findAll();
     public User findById();
-    public void create(User user);
-    public void update(User user);
+    public User create(User user);
+    public User update(User user);
 }
