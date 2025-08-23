@@ -11,7 +11,7 @@ import java.time.LocalDateTime;
 public class TypeActivity {
     // id, name, description, userid, createdAt, updatedAt
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Integer id;
 
@@ -21,14 +21,15 @@ public class TypeActivity {
     @Column(name = "description")
     private String description;
 
-    @Column(name = "userid")
+    @ManyToOne
+    @JoinColumn(name = "user_id")
     private User user;
 
-    @Column(name = "createdAt")
+    @Column(name = "created_at")
     @CreationTimestamp
     private LocalDateTime createdAt;
 
-    @Column(name = "updatedAt")
+    @Column(name = "updated_at")
     @UpdateTimestamp
     private LocalDateTime updatedAt;
 

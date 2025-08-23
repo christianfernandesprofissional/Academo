@@ -1,10 +1,10 @@
 package com.academo.model;
 
 import jakarta.persistence.*;
-import jdk.jfr.Timestamp;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 
@@ -16,30 +16,32 @@ public class Activity {
     @Column(name = "id")
     private int id;
 
-    @Column(name = "Date")
-    @Timestamp
-    private LocalDateTime date;
+    @Column(name = "date")
+    private LocalDate date;
 
-    @Column(name = "Name")
+    @Column(name = "name")
     private String name;
 
     @Column(name = "Description")
     private String description;
 
-    @Column(name = "UserId")
+    @ManyToOne
+    @JoinColumn(name = "user_id")
     private User user;
 
-    @Column(name = "SubjectId")
+    @ManyToOne
+    @JoinColumn(name = "subject_id")
     private Subject subject;
 
-    @Column(name = "ActivityTypeId")
+    @ManyToOne
+    @JoinColumn(name = "activity_type_id")
     private TypeActivity typeActivity;
 
-    @Column(name = "CreatedAt")
+    @Column(name = "created_at")
     @CreationTimestamp
     private LocalDateTime createdAt;
 
-    @Column(name = "UpdatedAt")
+    @Column(name = "updated_at")
     @UpdateTimestamp
     private LocalDateTime updatedAt;
 
@@ -51,11 +53,11 @@ public class Activity {
         this.id = id;
     }
 
-    public LocalDateTime getDate() {
+    public LocalDate getDate() {
         return date;
     }
 
-    public void setDate(LocalDateTime date) {
+    public void setDate(LocalDate date) {
         this.date = date;
     }
 
