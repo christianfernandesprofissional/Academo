@@ -15,7 +15,7 @@ public class User {
     @Column(name = "id")
     private Integer id;
 
-    @Column(name = "username", nullable = false, length = 32, unique = true)
+    @Column(name = "username", nullable = false, unique = true)
     private String name;
 
     @Column(name = "password")
@@ -31,6 +31,9 @@ public class User {
     @Column(name = "updated_at")
     @UpdateTimestamp
     private LocalDateTime updatedAt;
+
+    @Column(name = "is_active", columnDefinition = "default false")
+    private Boolean isActive;
 
     public Integer getId() {
         return id;
@@ -56,9 +59,7 @@ public class User {
         this.password = password;
     }
 
-    public String getEmail() {
-        return email;
-    }
+    public String getEmail() { return email; }
 
     public void setEmail(String email) {
         this.email = email;

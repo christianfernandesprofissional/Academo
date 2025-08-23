@@ -36,8 +36,8 @@ public class Subject {
     @UpdateTimestamp
     private LocalDateTime updatedAt;
 
-    @OneToMany(mappedBy = "subject")
-    private List<GroupSubject> groupList;
+    @ManyToMany(mappedBy = "subjects")
+    private List<Group> groups;
 
     public Subject() {
     }
@@ -98,12 +98,12 @@ public class Subject {
         this.updatedAt = updatedAt;
     }
 
-    public List<GroupSubject> getGroupList() {
-        return groupList;
+    public List<Group> getGroups() {
+        return groups;
     }
 
-    public void setGroupList(List<GroupSubject> groupList) {
-        this.groupList = groupList;
+    public void setGroups(List<Group> groups) {
+        this.groups = groups;
     }
 
     @Override
