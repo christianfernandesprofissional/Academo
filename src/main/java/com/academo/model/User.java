@@ -35,6 +35,15 @@ public class User {
     @Column(name = "is_active", columnDefinition = "default false")
     private Boolean isActive;
 
+    public User() {}
+
+    public User(String name, String password, String email, Boolean isActive) {
+        this.name = name;
+        this.password = password;
+        this.email = email;
+        this.isActive = isActive;
+    }
+
     public Integer getId() {
         return id;
     }
