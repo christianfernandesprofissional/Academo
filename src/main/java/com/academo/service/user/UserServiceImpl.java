@@ -40,6 +40,6 @@ public class UserServiceImpl implements IUserService {
 
     @Override
     public User update(User user) {
-        return repository.save(user);
+        return userRepository.save(user);
     }
 }

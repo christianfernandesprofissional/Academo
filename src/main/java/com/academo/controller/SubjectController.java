@@ -15,14 +15,11 @@ public class SubjectController {
 
     // A recuperação do Id do User por meio do PathVariable é temporária
     // Será implementado um Middleware para recuperação deste ID
-    @PostMapping("/subjects/{userId}")
-    public ResponseEntity<Subject> create(@RequestBody Subject subject, @PathVariable Integer userId) {
-        System.out.println("CHEGUEI NESSA PARTE");
+    @PostMapping("/subjects")
+    public ResponseEntity<Subject> create(@RequestBody Subject subject) {
+        Integer userId = subject.getUser().getId();
         Subject createdSubject = service.create(subject, userId);
-        if(createdSubject != null) {
-            return ResponseEntity.status(HttpStatus.CREATED).body(createdSubject);
-        }
-        return ResponseEntity.badRequest().build();
+        return ResponseEntity.status(HttpStatus.CREATED).body(createdSubject);
     }
 
 }

@@ -1,6 +1,6 @@
 package com.academo.util.exceptions.subject;
 
-@R
+
 public class SubjectNotFoundException extends RuntimeException {
 
     public SubjectNotFoundException() {
