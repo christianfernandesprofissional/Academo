@@ -5,7 +5,8 @@ import com.academo.service.profile.IProfileService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RestController;
 
-@RestController("/profile")
+
+@RestController
 public class ProfileController {
 
     @Autowired
