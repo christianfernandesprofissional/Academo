@@ -46,6 +46,14 @@ public class Group {
     public Group() {
     }
 
+    public Group(int id, String name, String description, User user, boolean isActive) {
+        this.id = id;
+        this.name = name;
+        this.description = description;
+        this.user = user;
+        this.isActive = isActive;
+    }
+
     public int getId() {
         return id;
     }
@@ -109,6 +117,8 @@ public class Group {
     public void setSubjects(List<Subject> subjects) {
         this.subjects = subjects;
     }
+
+
 
     @Override
     public boolean equals(Object o) {

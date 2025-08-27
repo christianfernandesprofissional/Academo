@@ -1,5 +1,6 @@
 package com.academo.DTO.Group;
 
+import com.academo.model.Group;
 import com.academo.model.User;
 import jakarta.persistence.Column;
 import jakarta.persistence.JoinColumn;
@@ -20,12 +21,12 @@ public class GroupDTO {
     public GroupDTO() {
     }
 
-    public GroupDTO(int id, String name, String description, User user, boolean isActive) {
-        this.id = id;
-        this.name = name;
-        this.description = description;
-        this.user = user;
-        this.isActive = isActive;
+    public GroupDTO(Group group) {
+        this.setId(group.getId());
+        this.setName(group.getName());
+        this.setDescription(group.getDescription());
+        this.setUser(group.getUser());
+        this.setActive(group.isActive());
     }
 
     // Getters e Setters
@@ -69,6 +70,7 @@ public class GroupDTO {
         isActive = active;
     }
 
+    // Equals e HashCode
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
