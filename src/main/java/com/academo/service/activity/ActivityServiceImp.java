@@ -14,8 +14,8 @@ public  class ActivityServiceImp implements IActivityService{
     ActivityRepository activityRepository;
 
     @Override
-    public List<Activity> getActivities() {
-        return activityRepository.findAll();
+    public List<Activity> getActivities(Integer userId) {
+        return activityRepository.findByUserId(userId);
     }
 
     @Override
@@ -39,5 +39,10 @@ public  class ActivityServiceImp implements IActivityService{
     @Override
     public void deleteActivity(Integer id) {
 
+    }
+
+    @Override
+    public Boolean existsActivity(Integer userId) {
+        return activityRepository.existsById(userId);
     }
 }
