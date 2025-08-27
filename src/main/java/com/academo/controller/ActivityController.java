@@ -16,22 +16,25 @@ public class ActivityController {
     private ActivityServiceImp  activityService;
 
     @GetMapping("/all/{userId}")
-    public List<Activity> getActivities(@PathVariable Integer userId) {
-        return activityService.getActivities(userId);
+    public ResponseEntity<List<Activity>> getActivities(@PathVariable Integer userId) {
+        return ResponseEntity.ok(activityService.getActivities(userId));
     }
 
     @GetMapping("/{id}")
-    public Activity getActivity(@PathVariable Integer id) {
+    public ResponseEntity<Activity> getActivity(@PathVariable Integer id) {
         Activity activity = activityService.getActivityById(id);
         if(activity == null) {
             throw new ActivityNotFoundException();
         }
-        return activity;
+        return ResponseEntity.ok(activity);
     }
 
     @PostMapping
-    public Activity createActivity(@RequestBody Activity activity) {
-        return activityService.insertActivity(activity);
+    public ResponseEntity<Activity> createActivity(@RequestBody Activity activity) {
+        if(activityService.existsActivity(activity)) throw new ActivityExistsException();
+        Activity created = activityService.insertActivity(activity);
+        Location URI = URI.createURI("/activities/" + created.getId);
+        return ResponseEntity.created().body(URI);
     }
 
     @PutMapping("/{id}")
