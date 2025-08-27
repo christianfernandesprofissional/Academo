@@ -5,7 +5,6 @@ import com.academo.model.Activity;
 import java.util.List;
 
 public interface IActivityService {
-
     List<Activity> getActivities();
     Activity getActivityById(int id);
     Activity insertActivity(Activity activity);
