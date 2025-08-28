@@ -14,8 +14,6 @@ public class GroupDTO {
     private int id;
     private String name;
     private String description;
-    private User user;
-    private boolean isActive;
 
     // Construtores
     public GroupDTO() {
@@ -25,8 +23,6 @@ public class GroupDTO {
         this.setId(group.getId());
         this.setName(group.getName());
         this.setDescription(group.getDescription());
-        this.setUser(group.getUser());
-        this.setActive(group.isActive());
     }
 
     // Getters e Setters
@@ -52,22 +48,6 @@ public class GroupDTO {
 
     public void setDescription(String description) {
         this.description = description;
-    }
-
-    public User getUser() {
-        return user;
-    }
-
-    public void setUser(User user) {
-        this.user = user;
-    }
-
-    public boolean isActive() {
-        return isActive;
-    }
-
-    public void setActive(boolean active) {
-        isActive = active;
     }
 
     // Equals e HashCode

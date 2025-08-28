@@ -8,6 +8,7 @@ import com.academo.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.io.IOException;
 import java.util.List;
 
 @Service
@@ -19,9 +20,14 @@ public class GroupServiceImpl implements IGroupService {
     @Autowired
     private UserRepository userRepository;
 
-    // Lista todos os grupos (VOLTAR AQUI PARA TERMINAR A IMPLEMENTAÇÃO)
-    public List<GroupDTO> findByUserId(Integer id){
+    // Lista todos os grupos pelo usuário
+    public List<GroupDTO> getGroups(Integer id){
         return groupRepository.findByUserId(id).stream().map(GroupDTO::new).toList();
+    }
+
+    // Função para acessar um grupo específico
+    public GroupDTO getGroupById(Integer groupId){
+        return new GroupDTO(groupRepository.findById(groupId).orElseThrow());
     }
 
     // Cria novo grupo
