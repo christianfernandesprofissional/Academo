@@ -10,7 +10,9 @@ import java.util.List;
 @Repository
 public interface ActivityRepository extends JpaRepository<Activity, Integer> {
 
-    List<Activity> findByUserId(Integer userId);
+    List<Activity> findAllByUserId(Integer userId);
 
     Integer user(User user);
+
+    Boolean existsActivityByName(String activityName);
 }
