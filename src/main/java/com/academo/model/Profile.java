@@ -34,6 +34,8 @@ public class Profile {
     @Column(name="updated_at")
     private LocalDateTime updatedAt;
 
+
+
     public int getId() {
         return id;
     }
