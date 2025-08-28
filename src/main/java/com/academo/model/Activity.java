@@ -93,10 +93,10 @@ public class Activity {
         this.subject = subject;
     }
 
-    public ActivityType getTypeActivity() {
+    public ActivityType getActivityType() {
         return activityType;
     }
-    public void setTypeActivity(ActivityType activityType) {
+    public void setActivityType(ActivityType activityType) {
         this.activityType = activityType;
     }
 

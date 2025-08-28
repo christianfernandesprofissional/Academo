@@ -1,10 +1,10 @@
-package com.academo.service.typeActivity;
+package com.academo.service.activityType;
 
 import com.academo.model.ActivityType;
 
 import java.util.List;
 
-public interface ITypeActivityService {
+public interface IActivityTypeService {
 
     public List<ActivityType> findAll();
     public ActivityType findById(Integer id);

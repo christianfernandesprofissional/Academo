@@ -1,4 +1,4 @@
-package com.academo.service.typeActivity;
+package com.academo.service.activityType;
 
 import com.academo.model.ActivityType;
 import org.springframework.stereotype.Service;
@@ -6,7 +6,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
-public class TypeActivityServiceImp implements ITypeActivityService{
+public class ActivityTypeServiceImp implements IActivityTypeService {
     @Override
     public List<ActivityType> findAll() {
         return List.of();
