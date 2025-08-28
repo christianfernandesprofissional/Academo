@@ -1,6 +1,5 @@
 package com.academo.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
@@ -36,7 +35,7 @@ public class Activity {
 
     @ManyToOne
     @JoinColumn(name = "activity_type_id")
-    private TypeActivity typeActivity;
+    private ActivityType activityType;
 
     @Column(name = "created_at")
     @CreationTimestamp
@@ -94,11 +93,11 @@ public class Activity {
         this.subject = subject;
     }
 
-    public TypeActivity getTypeActivity() {
-        return typeActivity;
+    public ActivityType getTypeActivity() {
+        return activityType;
     }
-    public void setTypeActivity(TypeActivity typeActivity) {
-        this.typeActivity = typeActivity;
+    public void setTypeActivity(ActivityType activityType) {
+        this.activityType = activityType;
     }
 
     public LocalDateTime getCreatedAt() {

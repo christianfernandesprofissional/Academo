@@ -8,7 +8,7 @@ import java.time.LocalDateTime;
 
 @Entity
 @Table(name="tb_type_activities")
-public class TypeActivity {
+public class ActivityType {
     // id, name, description, userid, createdAt, updatedAt
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

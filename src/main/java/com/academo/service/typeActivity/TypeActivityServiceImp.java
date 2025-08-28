@@ -1,6 +1,6 @@
 package com.academo.service.typeActivity;
 
-import com.academo.model.TypeActivity;
+import com.academo.model.ActivityType;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -8,22 +8,22 @@ import java.util.List;
 @Service
 public class TypeActivityServiceImp implements ITypeActivityService{
     @Override
-    public List<TypeActivity> findAll() {
+    public List<ActivityType> findAll() {
         return List.of();
     }
 
     @Override
-    public TypeActivity findById(Integer id) {
+    public ActivityType findById(Integer id) {
         return null;
     }
 
     @Override
-    public TypeActivity create(TypeActivity typeActivity) {
+    public ActivityType create(ActivityType activityType) {
         return null;
     }
 
     @Override
-    public TypeActivity update(TypeActivity typeActivity) {
+    public ActivityType update(ActivityType activityType) {
         return null;
     }
 }
