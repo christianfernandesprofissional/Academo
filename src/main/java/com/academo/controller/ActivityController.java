@@ -31,7 +31,8 @@ public class ActivityController {
                        a.getName(),
                        a.getDescription(),
                        a.getSubject() != null ? a.getSubject().getId() : null,
-                       a.getTypeActivity() != null ? a.getTypeActivity().getId() : null
+                       a.getActivityType
+                               () != null ? a.getActivityType().getId() : null
                )).toList();
        return ResponseEntity.ok(activities);
     }
