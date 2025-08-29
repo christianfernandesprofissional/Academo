@@ -1,5 +1,6 @@
 package com.academo.util.exceptions;
 
+import com.academo.util.exceptions.activity.ActivityExistsException;
 import com.academo.util.exceptions.activity.ActivityNotFoundException;
 import com.academo.util.exceptions.group.GroupNotFoundException;
 import com.academo.util.exceptions.profile.ProfileNotFoundException;
@@ -17,12 +18,17 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
 
     @ExceptionHandler(ActivityNotFoundException.class)
     private ResponseEntity<String> activityNotFoundHandler(ActivityNotFoundException exception) {
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Ativadade não encontrada!");
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Atividade não encontrada!");
+    }
+
+    @ExceptionHandler(ActivityExistsException.class)
+    private ResponseEntity<String> activityNotFoundHandler(ActivityExistsException exception) {
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Atividade já cadastrada!");
     }
 
     @ExceptionHandler(GroupNotFoundException.class)
     private ResponseEntity<String> groupNotFoundHandler(GroupNotFoundException exception) {
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Gropo de matérias não encontrado!");
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Grupo de matérias não encontrado!");
     }
 
     @ExceptionHandler(ProfileNotFoundException.class)
