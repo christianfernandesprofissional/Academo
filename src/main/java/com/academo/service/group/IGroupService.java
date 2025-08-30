@@ -6,9 +6,11 @@ import java.util.List;
 
 public interface IGroupService{
 
-    public List<Group> findAll();
-    public Group findById(Integer id);
-    public Group create(Group group);
-    public Group update(Group group);
+    public List<Group> getGroups(Integer id);
+    public Group getGroupById(Integer id);
+    public Group insertGroup(Group group);
+    public Group updateGroup(Integer id, Group group);
+
+    public void deleteGroup(Integer id);
 
 }
