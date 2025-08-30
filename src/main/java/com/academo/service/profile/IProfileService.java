@@ -1,6 +1,7 @@
 package com.academo.service.profile;
 
 import com.academo.model.Profile;
+import com.academo.model.User;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -8,8 +9,6 @@ import java.util.List;
 @Service
 public interface IProfileService  {
 
-    public List<Profile> findAll();
-    public Profile findById(Integer id);
-    public Profile create(Profile profile);
+    public Profile create(User user);
     public Profile update(Profile profile);
 }
