@@ -11,8 +11,5 @@ import java.util.List;
 public interface ActivityRepository extends JpaRepository<Activity, Integer> {
 
     List<Activity> findAllByUserId(Integer userId);
-
-    Integer user(User user);
-
     Boolean existsActivityByName(String activityName);
 }
