@@ -25,6 +25,9 @@ public class Activity {
     @Column(name = "Description")
     private String description;
 
+    @Column(name = "value")
+    private double value;
+
     @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;
@@ -116,5 +119,11 @@ public class Activity {
         this.updatedAt = updatedAt;
     }
 
+    public double getValue() {
+        return value;
+    }
 
+    public void setValue(double value) {
+        this.value = value;
+    }
 }
