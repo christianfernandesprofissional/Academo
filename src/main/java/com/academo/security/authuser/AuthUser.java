@@ -34,4 +34,6 @@ public class AuthUser implements UserDetails {
     public String getUsername() {
         return user.getName();
     }
+
+    public User getUser() {return user;}
 }

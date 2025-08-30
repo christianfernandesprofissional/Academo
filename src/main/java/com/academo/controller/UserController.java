@@ -2,8 +2,11 @@ package com.academo.controller;
 
 import com.academo.model.User;
 import com.academo.repository.UserRepository;
+import com.academo.security.authuser.AuthUser;
+import com.academo.security.authuser.LoginResponseDTO;
 import com.academo.security.authuser.RegisterDTO;
 import com.academo.security.authuser.UserAuthDTO;
+import com.academo.security.service.TokenService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -23,11 +26,17 @@ public class UserController {
     @Autowired
     private UserRepository userRepository;
 
+    @Autowired
+    private TokenService tokenService;
+
     @PostMapping("/login")
-    public ResponseEntity<Authentication> login(@RequestBody UserAuthDTO user) {
+    public ResponseEntity<LoginResponseDTO> login(@RequestBody UserAuthDTO user) {
         UsernamePasswordAuthenticationToken userPass = new UsernamePasswordAuthenticationToken(user.username(), user.password());
         Authentication auth = authenticationManager.authenticate(userPass);
-        return ResponseEntity.ok().build();
+
+        var token = tokenService.generateToken((AuthUser) auth.getPrincipal());
+
+        return ResponseEntity.ok(new LoginResponseDTO(token));
     }
 
     @PostMapping("/register")
