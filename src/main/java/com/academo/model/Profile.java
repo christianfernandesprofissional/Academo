@@ -28,6 +28,15 @@ public class Profile {
     @Column(name="name")
     private String fullName;
 
+    @Column(name = "birth_date")
+    private LocalDate birthDate;
+
+    @Column(name = "gender", length = 90)
+    private Character gender;
+
+    @Column(name = "institution")
+    private String institution;
+
     @Column(name="created_at")
     private LocalDateTime createdAt;
 
