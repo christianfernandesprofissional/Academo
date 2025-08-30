@@ -2,6 +2,6 @@ package com.academo.controller;
 
 import org.springframework.web.bind.annotation.RestController;
 
-@RestController(value = "/scores")
+@RestController
 public class ScoresController {
 }

@@ -35,7 +35,7 @@ public class Activity {
 
     @ManyToOne
     @JoinColumn(name = "activity_type_id")
-    private TypeActivity typeActivity;
+    private ActivityType activityType;
 
     @Column(name = "created_at")
     @CreationTimestamp
@@ -93,11 +93,11 @@ public class Activity {
         this.subject = subject;
     }
 
-    public TypeActivity getTypeActivity() {
-        return typeActivity;
+    public ActivityType getActivityType() {
+        return activityType;
     }
-    public void setTypeActivity(TypeActivity typeActivity) {
-        this.typeActivity = typeActivity;
+    public void setActivityType(ActivityType activityType) {
+        this.activityType = activityType;
     }
 
     public LocalDateTime getCreatedAt() {
