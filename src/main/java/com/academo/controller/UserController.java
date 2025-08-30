@@ -1,26 +1,53 @@
 package com.academo.controller;
 
 import com.academo.model.User;
-import com.academo.service.user.IUserService;
+import com.academo.repository.UserRepository;
+import com.academo.security.authuser.AuthUser;
+import com.academo.security.authuser.LoginResponseDTO;
+import com.academo.security.authuser.RegisterDTO;
+import com.academo.security.authuser.UserAuthDTO;
+import com.academo.security.service.TokenService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-
-
-import java.util.List;
-
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
+@RequestMapping("/auth")
 public class UserController {
 
     @Autowired
-    private IUserService service;
+    private AuthenticationManager authenticationManager;
 
-    @GetMapping
-    public ResponseEntity<List<User>> findAll() {
+    @Autowired
+    private UserRepository userRepository;
 
-        return ResponseEntity.ok(service.findAll());
+    @Autowired
+    private TokenService tokenService;
+
+    @PostMapping("/login")
+    public ResponseEntity<LoginResponseDTO> login(@RequestBody UserAuthDTO user) {
+        UsernamePasswordAuthenticationToken userPass = new UsernamePasswordAuthenticationToken(user.username(), user.password());
+        Authentication auth = authenticationManager.authenticate(userPass);
+
+        var token = tokenService.generateToken((AuthUser) auth.getPrincipal());
+
+        return ResponseEntity.ok(new LoginResponseDTO(token));
     }
+
+    @PostMapping("/register")
+    public ResponseEntity<?> register(@RequestBody @Validated RegisterDTO register) {
+        if(userRepository.findByName(register.name()) != null ||
+                userRepository.findByEmail(register.email()) != null) return ResponseEntity.badRequest().build();
+
+        String encryptedPassword = new BCryptPasswordEncoder().encode(register.password());
+        User user = new  User(register.name(), encryptedPassword,register.email(), register.isActive());
+        userRepository.save(user);
+        return ResponseEntity.ok().build();
+    }
+
 }
