@@ -10,5 +10,5 @@ import java.util.List;
 public interface IProfileService  {
 
     public Profile create(User user);
-    public Profile update(Profile profile);
+    public Profile update(Integer userId, Profile profile);
 }

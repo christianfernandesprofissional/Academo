@@ -15,7 +15,7 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 @ControllerAdvice
 public class RestExceptionHandler extends ResponseEntityExceptionHandler {
 
-
+    //Activity
     @ExceptionHandler(ActivityNotFoundException.class)
     private ResponseEntity<String> activityNotFoundHandler(ActivityNotFoundException exception) {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Atividade não encontrada!");
@@ -26,26 +26,31 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Atividade já cadastrada!");
     }
 
+    //Group
     @ExceptionHandler(GroupNotFoundException.class)
     private ResponseEntity<String> groupNotFoundHandler(GroupNotFoundException exception) {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Grupo de matérias não encontrado!");
     }
 
+    //Profile
     @ExceptionHandler(ProfileNotFoundException.class)
     private ResponseEntity<String> profileNotFoundHandler(ProfileNotFoundException exception) {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Perfil não encontrado!");
     }
 
+    //Subject
     @ExceptionHandler(SubjectNotFoundException.class)
     private ResponseEntity<String> subjectNotFoundHandler(SubjectNotFoundException exception) {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Matéria não encontrada!");
     }
 
+    //ActivityType
     @ExceptionHandler(TypeNotPresentException.class)
     private ResponseEntity<String> typeActivityNotFoundException(TypeNotPresentException exception) {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body("TIpo de Atividade não encontrado!");
     }
 
+    //User
     @ExceptionHandler(UserNotFoundException.class)
     private ResponseEntity<String> userNotFoundHandler(UserNotFoundException exception) {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Usuário não encontrado!");

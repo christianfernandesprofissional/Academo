@@ -22,7 +22,7 @@ public class Activity {
     @Column(name = "name")
     private String name;
 
-    @Column(name = "Description")
+    @Column(name = "description")
     private String description;
 
     @Column(name = "value")

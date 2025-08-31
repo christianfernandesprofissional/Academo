@@ -1,6 +1,9 @@
 package com.academo.model;
 
+import com.academo.controller.dtos.ProfilePutDTO;
 import jakarta.persistence.*;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -10,18 +13,7 @@ import java.util.Date;
 @Table(name="tb_profiles")
 public class Profile {
 
-    public Profile() {
-    }
-
-    public Profile(int id, String fullName) {
-        this.id = id;
-        this.fullName = fullName;
-        this.createdAt = LocalDateTime.now();
-        this.updatedAt = LocalDateTime.now();
-    }
-
     @Id
-    @GeneratedValue(strategy= GenerationType.IDENTITY)
     @Column(name="id")
     private int id;
 
@@ -37,13 +29,30 @@ public class Profile {
     @Column(name = "institution")
     private String institution;
 
-    @Column(name="created_at")
+    @Column(name="created_at", updatable = false)
+    @CreationTimestamp
     private LocalDateTime createdAt;
 
     @Column(name="updated_at")
+    @UpdateTimestamp
     private LocalDateTime updatedAt;
 
+    public Profile() {
+    }
 
+    public Profile(int id, String fullName) {
+        this.id = id;
+        this.fullName = fullName;
+        this.createdAt = LocalDateTime.now();
+        this.updatedAt = LocalDateTime.now();
+    }
+
+    public Profile(ProfilePutDTO profilePutDTO) {
+        fullName = profilePutDTO.fullName();
+        birthDate = profilePutDTO.birthDate();
+        gender = profilePutDTO.gender();
+        institution = profilePutDTO.institution();
+    }
 
     public int getId() {
         return id;
@@ -71,5 +80,33 @@ public class Profile {
 
     public void setUpdatedAt(LocalDateTime updatedAt) {
         this.updatedAt = updatedAt;
+    }
+
+    public LocalDate getBirthDate() {
+        return birthDate;
+    }
+
+    public void setBirthDate(LocalDate birthDate) {
+        this.birthDate = birthDate;
+    }
+
+    public Character getGender() {
+        return gender;
+    }
+
+    public void setGender(Character gender) {
+        this.gender = gender;
+    }
+
+    public String getInstitution() {
+        return institution;
+    }
+
+    public void setInstitution(String institution) {
+        this.institution = institution;
+    }
+
+    public void setCreatedAt(LocalDateTime createdAt) {
+        this.createdAt = createdAt;
     }
 }
