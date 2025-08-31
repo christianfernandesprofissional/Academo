@@ -4,6 +4,8 @@ import com.academo.model.Profile;
 import com.academo.model.User;
 import com.academo.repository.ProfileRepository;
 import com.academo.repository.UserRepository;
+import com.academo.service.profile.ProfileServiceImpl;
+import com.academo.util.exceptions.user.UserNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -16,26 +18,11 @@ public class UserServiceImpl implements IUserService {
     private UserRepository userRepository;
 
     @Autowired
-    private ProfileRepository profileRepository;
-
-    @Override
-    public List<User> findAll() {
-        return userRepository.findAll();
-    }
+    private ProfileServiceImpl profileService;
 
     @Override
     public User findById(Integer id) {
-        return userRepository.findById(id).orElse(null);
-    }
-
-    @Override
-    public User create(User user) {
-        User createdUser = userRepository.save(user);
-        if (user != null) {
-            Profile profile = new Profile();
-
-        }
-        return null;
+        return userRepository.findById(id).orElseThrow(UserNotFoundException::new);
     }
 
     @Override

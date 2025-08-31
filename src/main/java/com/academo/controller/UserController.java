@@ -7,6 +7,7 @@ import com.academo.security.authuser.LoginResponseDTO;
 import com.academo.security.authuser.RegisterDTO;
 import com.academo.security.authuser.UserAuthDTO;
 import com.academo.security.service.TokenService;
+import com.academo.service.profile.ProfileServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -25,6 +26,9 @@ public class UserController {
 
     @Autowired
     private UserRepository userRepository;
+
+    @Autowired
+    ProfileServiceImpl profileService;
 
     @Autowired
     private TokenService tokenService;
@@ -46,7 +50,8 @@ public class UserController {
 
         String encryptedPassword = new BCryptPasswordEncoder().encode(register.password());
         User user = new  User(register.name(), encryptedPassword,register.email(), register.isActive());
-        userRepository.save(user);
+        User createdUser = userRepository.save(user);
+        profileService.create(createdUser);
         return ResponseEntity.ok().build();
     }
 
