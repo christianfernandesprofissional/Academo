@@ -33,8 +33,8 @@ public class SubjectController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Subject> getSubject(@PathVariable Integer subjectId) {
-        Subject subject = service.findById(subjectId);
+    public ResponseEntity<Subject> getSubject(@PathVariable Integer id) {
+        Subject subject = service.findById(id);
         return ResponseEntity.ok(subject);
     }
 
