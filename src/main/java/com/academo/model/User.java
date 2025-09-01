@@ -37,11 +37,11 @@ public class User {
 
     public User() {}
 
-    public User(String name, String password, String email, Boolean isActive) {
+    public User(String name, String password, String email) {
         this.name = name;
         this.password = password;
         this.email = email;
-        this.isActive = isActive;
+        this.isActive = true;
     }
 
     public Integer getId() {

@@ -44,12 +44,12 @@ public class UserController {
     }
 
     @PostMapping("/register")
-    public ResponseEntity<?> register(@RequestBody @Validated RegisterDTO register) {
+    public ResponseEntity<?> register(@RequestBody RegisterDTO register) {
         if(userRepository.findByName(register.name()) != null ||
                 userRepository.findByEmail(register.email()) != null) return ResponseEntity.badRequest().build();
 
         String encryptedPassword = new BCryptPasswordEncoder().encode(register.password());
-        User user = new  User(register.name(), encryptedPassword,register.email(), register.isActive());
+        User user = new  User(register.name(), encryptedPassword,register.email());
         User createdUser = userRepository.save(user);
         profileService.create(createdUser);
         return ResponseEntity.ok().build();
