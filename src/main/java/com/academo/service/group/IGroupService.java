@@ -7,9 +7,9 @@ import java.util.List;
 public interface IGroupService{
 
     public List<Group> getGroups(Integer id);
-    public Group getGroupById(Integer id);
-    public Group insertGroup(Group group);
-    public Group updateGroup(Integer id, Group group);
+    public Group getGroupByIdAndUserId(Integer userId, Integer id);
+    public Group insertGroup(Integer userId, Group group);
+    public Group updateGroup(Integer userId, Group group);
 
     public void deleteGroup(Integer id);
 
