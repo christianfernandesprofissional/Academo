@@ -1,13 +1,16 @@
 package com.academo.controller;
 
+import com.academo.controller.dtos.ActivityTypeDTO;
 import com.academo.model.Activity;
 import com.academo.model.ActivityType;
 import com.academo.model.User;
+import com.academo.security.authuser.AuthUser;
 import com.academo.service.activityType.ActivityTypeServiceImp;
 import com.academo.service.user.UserServiceImpl;
 import com.academo.util.exceptions.activity.ActivityExistsException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
@@ -22,9 +25,16 @@ public class ActivityTypeController {
     @Autowired
     UserServiceImpl userServiceImp;
 
-    @GetMapping("/all/{userId}")
-    public ResponseEntity<List<ActivityType>> getActivities(@PathVariable Integer userId) {
-        List<ActivityType> types  = activityTypeService.findAll(userId);
+    @GetMapping("/all")
+    public ResponseEntity<List<ActivityTypeDTO>> getActivities(Authentication authentication) {
+        Integer userId = ((AuthUser) authentication.getPrincipal()).getUser().getId();
+        List<ActivityTypeDTO> types  = activityTypeService.findAll(userId)
+                .stream()
+                .map(t -> new ActivityTypeDTO(
+                        t.getId(),
+                        t.getName(),
+                        t.getDescription()
+                )).toList();
         return ResponseEntity.ok(types);
     }
 
