@@ -29,7 +29,8 @@ public class GroupServiceImpl implements IGroupService {
     // Função para acessar um grupo específico
     @Override
     public Group getGroupByIdAndUserId(Integer userId, Integer groupId){
-        return groupRepository.findByIdAndUserId(userId,groupId).orElseThrow(GroupNotFoundException::new);
+        //return groupRepository.findByIdAndUserId(userId,groupId).orElseThrow(GroupNotFoundException::new);
+        return groupRepository.findById(groupId).orElseThrow(GroupNotFoundException::new);
     }
 
     @Override
@@ -43,7 +44,8 @@ public class GroupServiceImpl implements IGroupService {
     @Override
     public Group updateGroup(Integer userId, Group group) {
         // Fazer a implementação do encontrar
-
+        User user = userService.findById(userId);
+        group.setUser(user);
         return groupRepository.save(group);
     }
 

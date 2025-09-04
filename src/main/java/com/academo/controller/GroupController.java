@@ -39,10 +39,12 @@ public class GroupController {
 
     // Função para acessar um grupo específico
     @GetMapping
-    public ResponseEntity<Group> findById(Authentication authentication, @RequestBody Integer groupId){
+    public ResponseEntity<GroupDTO> findById(Authentication authentication, @RequestParam Integer groupId){
+        //usando @RequestParam a requisição é feita pela url ficando localhost:8080/groups?groupId=1
         Integer userId = ((AuthUser) authentication.getPrincipal()).getUser().getId();
         Group group = groupService.getGroupByIdAndUserId(userId,groupId);
-        return ResponseEntity.ok(group);
+        GroupDTO groupDTO = new GroupDTO(group.getId(), group.getName(), group.getDescription());
+        return ResponseEntity.ok(groupDTO);
     }
 
     // Função para criar novo grupo
@@ -62,8 +64,9 @@ public class GroupController {
         return ResponseEntity.ok().build();
     }
 
-    @DeleteMapping(value = "/{groupId}")
-    public ResponseEntity deleteGroup(@PathVariable Integer groupId){
+    @DeleteMapping
+    public ResponseEntity<Group> deleteGroup(Authentication authentication, @RequestParam Integer groupId){
+        //usando @RequestParam a requisição é feita pela url ficando localhost:8080/groups?groupId=1
         groupService.deleteGroup(groupId);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
