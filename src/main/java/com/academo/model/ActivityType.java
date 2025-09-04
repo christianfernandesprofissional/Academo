@@ -33,6 +33,12 @@ public class ActivityType {
     @UpdateTimestamp
     private LocalDateTime updatedAt;
 
+    public ActivityType() {
+    }
+
+    public ActivityType(String name, String description) {
+    }
+
     public Integer getId() {
         return id;
     }
