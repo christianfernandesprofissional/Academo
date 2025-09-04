@@ -29,7 +29,7 @@ public class Group {
     @Column(name = "is_active")
     private boolean isActive;
 
-    @Column(name = "created_at")
+    @Column(name = "created_at", updatable = false)
     @CreationTimestamp
     private LocalDateTime createdAt;
 
@@ -46,12 +46,18 @@ public class Group {
     public Group() {
     }
 
-    public Group(int id, String name, String description, User user, boolean isActive) {
+    public Group(int id, String name, String description, User user) {
         this.id = id;
         this.name = name;
         this.description = description;
         this.user = user;
-        this.isActive = isActive;
+        this.isActive = true;
+    }
+
+    public Group(String name, String description) {
+        this.name = name;
+        this.description = description;
+        this.isActive = true;
     }
 
     public int getId() {
