@@ -42,6 +42,11 @@ public class Subject {
     public Subject() {
     }
 
+    public Subject(String name, String description) {
+        this.name = name;
+        this.description = description;
+    }
+
     public int getId() {
         return id;
     }
