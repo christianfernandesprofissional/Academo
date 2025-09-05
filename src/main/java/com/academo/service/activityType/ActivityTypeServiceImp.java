@@ -8,6 +8,7 @@ import com.academo.repository.UserRepository;
 import com.academo.service.user.UserServiceImpl;
 import com.academo.util.exceptions.activityType.ActivityTypeExistsException;
 import com.academo.util.exceptions.activityType.ActivityTypeNotFoundException;
+import com.academo.util.exceptions.activityType.ActivityTypeUserIdChangedException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -42,9 +43,16 @@ public class ActivityTypeServiceImp implements IActivityTypeService {
 
     @Override
     public ActivityType update(Integer userId, ActivityType activityType) {
-        User user = userService.findById(userId);
-        activityType.setUser(user);
         if(!repository.existsById(activityType.getId())) throw new ActivityTypeNotFoundException();
+
+        User user = userService.findById(userId);
+        ActivityType activityTypeDb = repository.getById(activityType.getId());
+
+        if (!user.getId().equals(activityTypeDb.getUser().getId())) throw new ActivityTypeUserIdChangedException();
+
+        activityType.setUser(user);
+
+
         return repository.save(activityType);
     }
 
