@@ -8,8 +8,8 @@ public interface IActivityTypeService {
 
     public List<ActivityType> findAll(Integer userId);
     public ActivityType findById(Integer id);
-    public ActivityType create(ActivityType activityType);
-    public ActivityType update(ActivityType activityType);
+    public ActivityType create(Integer userId, ActivityType activityType);
+    public ActivityType update(Integer userId, ActivityType activityType);
     public void deleteActivityType(Integer activityId);
 
 }

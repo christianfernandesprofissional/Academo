@@ -3,9 +3,9 @@ package com.academo.service.group;
 import com.academo.model.Group;
 import com.academo.model.User;
 import com.academo.repository.GroupRepository;
-import com.academo.repository.UserRepository;
 import com.academo.service.user.UserServiceImpl;
 import com.academo.util.exceptions.group.GroupNotFoundException;
+import com.academo.util.exceptions.group.GroupUserIdChangedException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -43,8 +43,13 @@ public class GroupServiceImpl implements IGroupService {
 
     @Override
     public Group updateGroup(Integer userId, Group group) {
-        // Fazer a implementação do encontrar
+        if (!groupRepository.existsById(group.getId())) throw new GroupNotFoundException();
+
         User user = userService.findById(userId);
+        Group groupDb = groupRepository.findById(group.getId()).get();
+
+        if (!user.getId().equals(groupDb.getUser().getId())) throw new GroupUserIdChangedException();
+        
         group.setUser(user);
         return groupRepository.save(group);
     }
