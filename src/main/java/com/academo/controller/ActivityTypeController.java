@@ -27,6 +27,7 @@ public class ActivityTypeController {
     @Autowired
     UserServiceImpl userServiceImp;
 
+    // Encontra todos os registros
     @GetMapping("/all")
     public ResponseEntity<List<ActivityTypeDTO>> getActivities(Authentication authentication) {
         Integer userId = ((AuthUser) authentication.getPrincipal()).getUser().getId();
@@ -40,6 +41,7 @@ public class ActivityTypeController {
         return ResponseEntity.ok(types);
     }
 
+    // Encontra registro específico
     @GetMapping()
     public ResponseEntity<ActivityTypeDTO> getActivity(Authentication authentication, @RequestParam Integer id) {
         Integer userId = ((AuthUser) authentication.getPrincipal()).getUser().getId();
@@ -48,20 +50,28 @@ public class ActivityTypeController {
         return ResponseEntity.ok(activityTypeDTO);
     }
 
+    // Criação
     @PostMapping
     public ResponseEntity<ActivityType> createActivity(Authentication authentication, @RequestBody ActivityTypeDTO activityTypeDTO) {
         Integer userId = ((AuthUser) authentication.getPrincipal()).getUser().getId();
-        ActivityType created = activityTypeService.create(userId, new ActivityType(activityTypeDTO.name(), activityTypeDTO.description()));
+        activityTypeService.create(userId, new ActivityType(activityTypeDTO.name(), activityTypeDTO.description()));
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
-    @PutMapping("/{id}")
-    public ResponseEntity<Activity> updateActivity(@PathVariable Integer id, @RequestBody Activity activity) {
-        return null;
+    // Atualização
+    @PutMapping()
+    public ResponseEntity<Activity> updateActivity(Authentication authentication, @RequestBody ActivityTypeDTO activityTypeDTO) {
+        Integer userId = ((AuthUser) authentication.getPrincipal()).getUser().getId();
+        ActivityType activityType = new ActivityType(activityTypeDTO.name(), activityTypeDTO.description());
+        activityType.setId(activityTypeDTO.id());
+        activityTypeService.update(userId, activityType);
+        return ResponseEntity.ok().build();
     }
 
-    @DeleteMapping("/{id}")
-    public ResponseEntity deleteActivity(@PathVariable Integer id) {
-    return null;
+    // Deleção
+    @DeleteMapping
+    public ResponseEntity<ActivityType> deleteActivityType(Authentication authentication, @RequestParam Integer id) {
+        activityTypeService.deleteActivityType(id);
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 }

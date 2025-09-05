@@ -2,6 +2,7 @@ package com.academo.service.activityType;
 
 import com.academo.model.ActivityType;
 import com.academo.model.Group;
+import com.academo.model.User;
 import com.academo.repository.ActivityTypeRepository;
 import com.academo.repository.UserRepository;
 import com.academo.service.user.UserServiceImpl;
@@ -34,13 +35,15 @@ public class ActivityTypeServiceImp implements IActivityTypeService {
 
     @Override
     public ActivityType create(Integer userId, ActivityType activityType) {
-        if(repository.existsByName(activityType.getName())) throw new ActivityTypeExistsException();
+        if(repository.existsByNameAndUserId(activityType.getName(), userId)) throw new ActivityTypeExistsException();
         activityType.setUser(userService.findById(userId));
         return repository.save(activityType);
     }
 
     @Override
-    public ActivityType update(ActivityType activityType) {
+    public ActivityType update(Integer userId, ActivityType activityType) {
+        User user = userService.findById(userId);
+        activityType.setUser(user);
         if(!repository.existsById(activityType.getId())) throw new ActivityTypeNotFoundException();
         return repository.save(activityType);
     }

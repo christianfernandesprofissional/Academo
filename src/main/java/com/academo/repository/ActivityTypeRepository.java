@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.Optional;
 
 public interface ActivityTypeRepository extends JpaRepository<ActivityType, Integer> {
-    Boolean existsByName(String name);
+    Boolean existsByNameAndUserId(String name, Integer userId);
     List<ActivityType> findAllByUserId(Integer id);
     public Optional<ActivityType> findByIdAndUserId(Integer id, Integer userId);
 }

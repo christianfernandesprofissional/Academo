@@ -37,6 +37,8 @@ public class ActivityType {
     }
 
     public ActivityType(String name, String description) {
+        this.setName(name);
+        this.setDescription(description);
     }
 
     public Integer getId() {

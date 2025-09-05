@@ -3,7 +3,6 @@ package com.academo.service.group;
 import com.academo.model.Group;
 import com.academo.model.User;
 import com.academo.repository.GroupRepository;
-import com.academo.repository.UserRepository;
 import com.academo.service.user.UserServiceImpl;
 import com.academo.util.exceptions.group.GroupNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
