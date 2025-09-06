@@ -1,14 +1,11 @@
 package com.academo.controller;
 
-import com.academo.controller.dtos.GroupDTO;
-import com.academo.controller.dtos.SubjectDTO;
-import com.academo.controller.dtos.SubjectPostDTO;
-import com.academo.model.Group;
+import com.academo.controller.dtos.subject.SubjectDTO;
+import com.academo.controller.dtos.subject.SubjectPostDTO;
 import com.academo.model.Subject;
 import com.academo.security.authuser.AuthUser;
 import com.academo.service.subject.ISubjectService;
 import com.academo.service.subject.SubjectServiceImpl;
-import com.academo.service.user.UserServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -39,7 +36,7 @@ public class SubjectController {
     @GetMapping("/all")
     public ResponseEntity<List<SubjectDTO>> getSubjects(Authentication authentication) {
         Integer userId = ((AuthUser) authentication.getPrincipal()).getUser().getId();
-        List<SubjectDTO> subjects = service.getSubects(userId)
+        List<SubjectDTO> subjects = service.findAll(userId)
                 .stream()
                 .map(g -> new SubjectDTO(
                         g.getId(),

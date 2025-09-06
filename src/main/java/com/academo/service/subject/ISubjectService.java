@@ -6,9 +6,9 @@ import java.util.List;
 
 public interface ISubjectService {
 
-    public List<Subject> findAll();
-    public Subject findById(Integer id);
+    public List<Subject> findAll(Integer userId);
+    public Subject getSubjectByIdAndUserId(Integer userId, Integer subjectId);
     public Subject create(Subject subject, Integer userId);
-    public Subject update(Subject subject);
+    public Subject updateSubject(Integer userId, Subject subject);
 
 }

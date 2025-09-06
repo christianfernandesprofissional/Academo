@@ -1,10 +1,8 @@
 package com.academo.service.activityType;
 
 import com.academo.model.ActivityType;
-import com.academo.model.Group;
 import com.academo.model.User;
 import com.academo.repository.ActivityTypeRepository;
-import com.academo.repository.UserRepository;
 import com.academo.service.user.UserServiceImpl;
 import com.academo.util.exceptions.activityType.ActivityTypeExistsException;
 import com.academo.util.exceptions.activityType.ActivityTypeNotFoundException;
@@ -16,7 +14,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-public class ActivityTypeServiceImp implements IActivityTypeService {
+public class ActivityTypeServiceImpl implements IActivityTypeService {
 
     @Autowired
     ActivityTypeRepository repository;

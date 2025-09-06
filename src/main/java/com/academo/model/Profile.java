@@ -1,13 +1,12 @@
 package com.academo.model;
 
-import com.academo.controller.dtos.ProfilePutDTO;
+import com.academo.controller.dtos.profile.ProfilePutDTO;
 import jakarta.persistence.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.Date;
 
 @Entity
 @Table(name="tb_profiles")

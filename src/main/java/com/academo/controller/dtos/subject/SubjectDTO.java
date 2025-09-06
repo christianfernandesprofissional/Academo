@@ -1,4 +1,4 @@
-package com.academo.controller.dtos;
+package com.academo.controller.dtos.subject;
 
 public record SubjectDTO(
         Integer id,

@@ -32,7 +32,7 @@ public class Subject {
     @CreationTimestamp
     private LocalDateTime createdAt;
 
-    @Column(name = "updated_at")
+    @Column(name = "updated_at", updatable = false)
     @UpdateTimestamp
     private LocalDateTime updatedAt;
 

@@ -1,13 +1,11 @@
 package com.academo.controller;
 
-import com.academo.controller.dtos.ActivityTypeDTO;
+import com.academo.controller.dtos.activityType.ActivityTypeDTO;
 import com.academo.model.Activity;
 import com.academo.model.ActivityType;
-import com.academo.model.User;
 import com.academo.security.authuser.AuthUser;
-import com.academo.service.activityType.ActivityTypeServiceImp;
+import com.academo.service.activityType.ActivityTypeServiceImpl;
 import com.academo.service.user.UserServiceImpl;
-import com.academo.util.exceptions.activity.ActivityExistsException;
 import com.academo.util.exceptions.activityType.ActivityTypeNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -15,7 +13,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
-import java.net.URI;
 import java.util.List;
 
 @RestController
@@ -23,7 +20,7 @@ import java.util.List;
 public class ActivityTypeController {
 
     @Autowired
-    ActivityTypeServiceImp activityTypeService;
+    ActivityTypeServiceImpl activityTypeService;
     @Autowired
     UserServiceImpl userServiceImp;
 

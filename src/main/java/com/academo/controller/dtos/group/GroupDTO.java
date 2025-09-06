@@ -1,4 +1,4 @@
-package com.academo.controller.dtos;
+package com.academo.controller.dtos.group;
 
 public record GroupDTO (
         Integer id,

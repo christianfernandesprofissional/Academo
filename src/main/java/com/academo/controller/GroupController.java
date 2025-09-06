@@ -1,18 +1,16 @@
 package com.academo.controller;
 
-import com.academo.controller.dtos.GroupDTO;
-import com.academo.controller.dtos.GroupPostDTO;
+import com.academo.controller.dtos.group.GroupDTO;
+import com.academo.controller.dtos.group.GroupPostDTO;
 import com.academo.model.Group;
 import com.academo.security.authuser.AuthUser;
 import com.academo.service.group.GroupServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
-import java.net.URI;
 import java.util.List;
 
 @RestController
