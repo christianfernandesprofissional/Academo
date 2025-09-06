@@ -4,6 +4,7 @@ import com.academo.model.Group;
 import com.academo.model.User;
 import com.academo.repository.GroupRepository;
 import com.academo.service.user.UserServiceImpl;
+import com.academo.util.exceptions.NotAllowedInsertionException;
 import com.academo.util.exceptions.group.GroupNotFoundException;
 import com.academo.util.exceptions.group.GroupUserIdChangedException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -48,7 +49,7 @@ public class GroupServiceImpl implements IGroupService {
         User user = userService.findById(userId);
         Group groupDb = groupRepository.findById(group.getId()).get();
 
-        if (!user.getId().equals(groupDb.getUser().getId())) throw new GroupUserIdChangedException();
+        if (!user.getId().equals(groupDb.getUser().getId())) throw new NotAllowedInsertionException();
         
         group.setUser(user);
         return groupRepository.save(group);
