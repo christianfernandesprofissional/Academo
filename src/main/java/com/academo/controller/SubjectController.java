@@ -23,9 +23,8 @@ public class SubjectController {
     @Autowired
     ISubjectService serviceI;
 
-    SubjectServiceImpl service;
     @Autowired
-    private ISubjectService iSubjectService;
+    SubjectServiceImpl service;
 
     // A recuperação do Id do User por meio do PathVariable é temporária
     // Será implementado um Middleware para recuperação deste ID
@@ -51,17 +50,17 @@ public class SubjectController {
     @GetMapping
     public ResponseEntity<SubjectDTO> getSubject(Authentication authentication, @RequestParam Integer subjectId) {
         Integer userId = ((AuthUser) authentication.getPrincipal()).getUser().getId();
-        Subject subject = service.getSubjectByIdAndUserId(subjectId,userId);
+        Subject subject = service.getSubjectByIdAndUserId(userId, subjectId);
         SubjectDTO subjectDTO = new SubjectDTO(subject.getId(), subject.getName(), subject.getDescription());
         return ResponseEntity.ok(subjectDTO);
     }
 
     @PutMapping
-    public ResponseEntity<Subject> updateSubject(Authentication authentication, @RequestBody SubjectDTO subjectDTO) {
+    public ResponseEntity<SubjectDTO> updateSubject(Authentication authentication, @RequestBody SubjectDTO subjectDTO) {
         Integer userId = ((AuthUser) authentication.getPrincipal()).getUser().getId();
         Subject subject = new Subject(subjectDTO);
-        Subject updatedSubject = service.updateSubject(userId,subject);
-        return ResponseEntity.ok(updatedSubject);
+        service.updateSubject(userId,subject);
+        return ResponseEntity.ok().build();
     }
 
     @DeleteMapping

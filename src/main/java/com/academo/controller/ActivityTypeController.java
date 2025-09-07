@@ -40,10 +40,10 @@ public class ActivityTypeController {
     }
 
     // Encontra registro específico
-    @GetMapping()
+    @GetMapping
     public ResponseEntity<ActivityTypeDTO> getActivity(Authentication authentication, @RequestParam Integer id) {
         Integer userId = ((AuthUser) authentication.getPrincipal()).getUser().getId();
-        ActivityType activityType = activityTypeService.findByIdAndUserId(userId,id);
+        ActivityType activityType = activityTypeService.findByIdAndUserId(id, userId);
         ActivityTypeDTO activityTypeDTO = new ActivityTypeDTO(activityType.getId(), activityType.getName(), activityType.getDescription());
         return ResponseEntity.ok(activityTypeDTO);
     }
@@ -57,7 +57,7 @@ public class ActivityTypeController {
     }
 
     // Atualização
-    @PutMapping()
+    @PutMapping
     public ResponseEntity<Activity> updateActivity(Authentication authentication, @RequestBody ActivityTypeDTO activityTypeDTO) {
         Integer userId = ((AuthUser) authentication.getPrincipal()).getUser().getId();
         ActivityType activityType = new ActivityType(activityTypeDTO.name(), activityTypeDTO.description());

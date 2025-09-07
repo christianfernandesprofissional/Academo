@@ -27,8 +27,8 @@ public class ActivityTypeServiceImpl implements IActivityTypeService {
     }
 
     @Override
-    public ActivityType findByIdAndUserId(Integer userId, Integer ActivityTypeId) {
-        return repository.findByIdAndUserId(userId, ActivityTypeId).orElseThrow(ActivityTypeNotFoundException::new);
+    public ActivityType findByIdAndUserId(Integer ActivityTypeId, Integer userId) {
+        return repository.findByIdAndUserId(ActivityTypeId, userId).orElseThrow(ActivityTypeNotFoundException::new);
     }
 
     @Override
@@ -40,7 +40,7 @@ public class ActivityTypeServiceImpl implements IActivityTypeService {
 
     @Override
     public ActivityType update(Integer userId, ActivityType activityType) {
-        ActivityType inDb = repository.findByIdAndUserId(userId,activityType.getId()).orElseThrow(ActivityTypeNotFoundException::new);
+        ActivityType inDb = repository.findByIdAndUserId(activityType.getId(), userId).orElseThrow(ActivityTypeNotFoundException::new);
         if (!inDb.getUser().getId().equals(userId)) throw new NotAllowedInsertionException();
 
         activityType.setUser(inDb.getUser());
@@ -49,7 +49,7 @@ public class ActivityTypeServiceImpl implements IActivityTypeService {
 
     @Override
     public void deleteActivityType(Integer userId, Integer activityId){
-        ActivityType inDb = repository.findByIdAndUserId(userId,activityId).orElseThrow(ActivityTypeNotFoundException::new);
+        ActivityType inDb = repository.findByIdAndUserId(activityId, userId).orElseThrow(ActivityTypeNotFoundException::new);
         if (!inDb.getUser().getId().equals(userId)) throw new NotAllowedInsertionException("Deleção inválida!");
         repository.deleteById(activityId);
     }

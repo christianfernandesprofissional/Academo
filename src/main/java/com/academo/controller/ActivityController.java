@@ -52,7 +52,7 @@ public class ActivityController {
         if(activityService.existsActivityByName(activityPostDto.name())) throw new ActivityExistsException();
         Integer userId = ((AuthUser) authentication.getPrincipal()).getUser().getId();
         Activity activity = new Activity(activityPostDto);
-        Activity created = activityService.insertActivity(activity, userId, activityPostDto.ActivityTypeId(), activityPostDto.subjectId());
+        Activity created = activityService.insertActivity(activity, userId, activityPostDto.activityTypeId(), activityPostDto.subjectId());
         URI location = URI.create("/activities?activityId=" + created.getId());
         return ResponseEntity.created(location).build();
     }
@@ -62,8 +62,8 @@ public class ActivityController {
         if(!activityService.existsActivityById(activityPutDto.id())) throw new ActivityNotFoundException();
         Integer userId = ((AuthUser) authentication.getPrincipal()).getUser().getId();
         Activity activity = new Activity(activityPutDto);
-        Activity saved = activityService.updateActivity(activity, userId, activityPutDto.ActivityTypeId(), activityPutDto.subjectId());
-        return ResponseEntity.ok(saved);
+        activityService.updateActivity(activity, userId, activityPutDto.ActivityTypeId(), activityPutDto.subjectId());
+        return ResponseEntity.ok().build();
     }
 
     @DeleteMapping

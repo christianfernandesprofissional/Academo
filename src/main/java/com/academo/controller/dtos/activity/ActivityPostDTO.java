@@ -7,5 +7,5 @@ public record ActivityPostDTO(
         String name,
         String description,
         Integer subjectId,
-        Integer ActivityTypeId
+        Integer activityTypeId
 ) {}

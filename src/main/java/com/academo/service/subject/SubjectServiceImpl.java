@@ -40,8 +40,8 @@ public class SubjectServiceImpl implements ISubjectService {
     }
 
     @Override
-    public Subject getSubjectByIdAndUserId(Integer userId, Integer subjectId) {
-        return subjectRepository.findById(subjectId).orElseThrow(SubjectNotFoundException::new);
+    public Subject getSubjectByIdAndUserId(Integer subjectId, Integer userId) {
+        return subjectRepository.findByIdAndUserId(subjectId, userId).orElseThrow(SubjectNotFoundException::new);
     }
 
     @Override
