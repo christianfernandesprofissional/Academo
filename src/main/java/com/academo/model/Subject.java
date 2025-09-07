@@ -1,5 +1,7 @@
 package com.academo.model;
 
+import com.academo.controller.dtos.subject.SubjectDTO;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
@@ -32,11 +34,12 @@ public class Subject {
     @CreationTimestamp
     private LocalDateTime createdAt;
 
-    @Column(name = "updated_at")
+    @Column(name = "updated_at", updatable = false)
     @UpdateTimestamp
     private LocalDateTime updatedAt;
 
     @ManyToMany(mappedBy = "subjects")
+    @JsonIgnore
     private List<Group> groups;
 
     public Subject() {
@@ -46,7 +49,11 @@ public class Subject {
         this.name = name;
         this.description = description;
     }
-
+    public Subject(SubjectDTO subjectDTO) {
+        this.id = subjectDTO.id();
+        this.name = subjectDTO.name();
+        this.description = subjectDTO.description();
+    }
     public int getId() {
         return id;
     }

@@ -1,7 +1,7 @@
 package com.academo.controller;
 
 
-import com.academo.controller.dtos.ProfilePutDTO;
+import com.academo.controller.dtos.profile.ProfilePutDTO;
 import com.academo.model.Profile;
 import com.academo.security.authuser.AuthUser;
 import com.academo.service.profile.ProfileServiceImpl;

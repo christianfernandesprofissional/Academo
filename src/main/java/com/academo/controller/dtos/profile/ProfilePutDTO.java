@@ -1,4 +1,4 @@
-package com.academo.controller.dtos;
+package com.academo.controller.dtos.profile;
 
 import java.time.LocalDate;
 

@@ -1,12 +1,12 @@
-package com.academo.controller.dtos;
+package com.academo.controller.dtos.activity;
 
 import java.time.LocalDate;
 
-public record ActivityDTO(
+public record ActivityPutDTO(
         Integer id,
         LocalDate date,
         String name,
         String description,
         Integer subjectId,
-        Integer typeActivityId
+        Integer ActivityTypeId
 ) {}

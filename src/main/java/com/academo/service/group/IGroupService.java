@@ -10,7 +10,8 @@ public interface IGroupService{
     public Group getGroupByIdAndUserId(Integer userId, Integer id);
     public Group insertGroup(Integer userId, Group group);
     public Group updateGroup(Integer userId, Group group);
-
-    public void deleteGroup(Integer id);
+    public void deleteGroup(Integer userId, Integer groupId);
+    public Group addSubjectToGroup(Integer userId, Integer groupId, Integer SubjectId);
+    public Group deleteSubjectFromGroup(Integer userId, Integer groupId, Integer SubjectId);
 
 }

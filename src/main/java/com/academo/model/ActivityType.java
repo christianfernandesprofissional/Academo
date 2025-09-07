@@ -25,7 +25,7 @@ public class ActivityType {
     @JoinColumn(name = "user_id")
     private User user;
 
-    @Column(name = "created_at")
+    @Column(name = "created_at", updatable = false)
     @CreationTimestamp
     private LocalDateTime createdAt;
 

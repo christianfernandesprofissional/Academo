@@ -1,5 +1,7 @@
 package com.academo.model;
 
+import com.academo.controller.dtos.activity.ActivityPostDTO;
+import com.academo.controller.dtos.activity.ActivityPutDTO;
 import jakarta.persistence.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
@@ -40,13 +42,28 @@ public class Activity {
     @JoinColumn(name = "activity_type_id")
     private ActivityType activityType;
 
-    @Column(name = "created_at")
+    @Column(name = "created_at", updatable = false)
     @CreationTimestamp
     private LocalDateTime createdAt;
 
     @Column(name = "updated_at")
     @UpdateTimestamp
     private LocalDateTime updatedAt;
+
+    public Activity() {}
+
+    public Activity(ActivityPostDTO dto){
+        this.name = dto.name();
+        this.description = dto.description();
+        this.date = dto.date();
+    }
+
+    public Activity(ActivityPutDTO dto){
+        this.id = dto.id();
+        this.name = dto.name();
+        this.description = dto.description();
+        this.date = dto.date();
+    }
 
     public int getId() {
         return id;

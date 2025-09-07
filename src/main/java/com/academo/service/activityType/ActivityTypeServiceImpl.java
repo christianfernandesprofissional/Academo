@@ -1,22 +1,19 @@
 package com.academo.service.activityType;
 
 import com.academo.model.ActivityType;
-import com.academo.model.Group;
 import com.academo.model.User;
 import com.academo.repository.ActivityTypeRepository;
-import com.academo.repository.UserRepository;
 import com.academo.service.user.UserServiceImpl;
+import com.academo.util.exceptions.NotAllowedInsertionException;
 import com.academo.util.exceptions.activityType.ActivityTypeExistsException;
 import com.academo.util.exceptions.activityType.ActivityTypeNotFoundException;
-import com.academo.util.exceptions.activityType.ActivityTypeUserIdChangedException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
-public class ActivityTypeServiceImp implements IActivityTypeService {
+public class ActivityTypeServiceImpl implements IActivityTypeService {
 
     @Autowired
     ActivityTypeRepository repository;
@@ -30,8 +27,8 @@ public class ActivityTypeServiceImp implements IActivityTypeService {
     }
 
     @Override
-    public ActivityType findById(Integer id) {
-        return repository.findById(id).orElseThrow(ActivityTypeNotFoundException::new);
+    public ActivityType findByIdAndUserId(Integer ActivityTypeId, Integer userId) {
+        return repository.findByIdAndUserId(ActivityTypeId, userId).orElseThrow(ActivityTypeNotFoundException::new);
     }
 
     @Override
@@ -43,25 +40,18 @@ public class ActivityTypeServiceImp implements IActivityTypeService {
 
     @Override
     public ActivityType update(Integer userId, ActivityType activityType) {
-        if(!repository.existsById(activityType.getId())) throw new ActivityTypeNotFoundException();
+        ActivityType inDb = repository.findByIdAndUserId(activityType.getId(), userId).orElseThrow(ActivityTypeNotFoundException::new);
+        if (!inDb.getUser().getId().equals(userId)) throw new NotAllowedInsertionException();
 
-        User user = userService.findById(userId);
-        ActivityType activityTypeDb = repository.getById(activityType.getId());
-
-        if (!user.getId().equals(activityTypeDb.getUser().getId())) throw new ActivityTypeUserIdChangedException();
-
-        activityType.setUser(user);
-
-
+        activityType.setUser(inDb.getUser());
         return repository.save(activityType);
     }
 
     @Override
-    public void deleteActivityType(Integer activityId){
+    public void deleteActivityType(Integer userId, Integer activityId){
+        ActivityType inDb = repository.findByIdAndUserId(activityId, userId).orElseThrow(ActivityTypeNotFoundException::new);
+        if (!inDb.getUser().getId().equals(userId)) throw new NotAllowedInsertionException("Deleção inválida!");
         repository.deleteById(activityId);
     }
 
-    public Optional<ActivityType> findByIdAndUserId(Integer id, Integer userId){
-        return repository.findByIdAndUserId(id, userId);
-    }
 }
