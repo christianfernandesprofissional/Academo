@@ -4,7 +4,6 @@ import com.academo.controller.dtos.group.GroupDTO;
 import com.academo.controller.dtos.group.GroupPostDTO;
 import com.academo.controller.dtos.subject.SubjectDTO;
 import com.academo.model.Group;
-import com.academo.model.Subject;
 import com.academo.security.authuser.AuthUser;
 import com.academo.service.group.GroupServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -61,7 +60,7 @@ public class GroupController {
     @PostMapping
     public ResponseEntity<Group> createGroup(Authentication authentication, @RequestBody GroupPostDTO groupDTO){
         Integer userId = ((AuthUser) authentication.getPrincipal()).getUser().getId();
-        Group created = groupService.insertGroup(userId, new Group(groupDTO.name(), groupDTO.description()));
+        groupService.insertGroup(userId, new Group(groupDTO.name(), groupDTO.description()));
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
