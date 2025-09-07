@@ -1,6 +1,7 @@
 package com.academo.controller;
 
 import com.academo.controller.dtos.activityType.ActivityTypeDTO;
+import com.academo.controller.dtos.activityType.ActivityTypePostDTO;
 import com.academo.model.Activity;
 import com.academo.model.ActivityType;
 import com.academo.security.authuser.AuthUser;
@@ -49,7 +50,7 @@ public class ActivityTypeController {
 
     // Criação
     @PostMapping
-    public ResponseEntity<ActivityType> createActivity(Authentication authentication, @RequestBody ActivityTypeDTO activityTypeDTO) {
+    public ResponseEntity<ActivityType> createActivity(Authentication authentication, @RequestBody ActivityTypePostDTO activityTypeDTO) {
         Integer userId = ((AuthUser) authentication.getPrincipal()).getUser().getId();
         activityTypeService.create(userId, new ActivityType(activityTypeDTO.name(), activityTypeDTO.description()));
         return ResponseEntity.status(HttpStatus.CREATED).build();
