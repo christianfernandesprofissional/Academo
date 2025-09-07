@@ -65,7 +65,8 @@ public class GroupController {
     @DeleteMapping
     public ResponseEntity<Group> deleteGroup(Authentication authentication, @RequestParam Integer groupId){
         //usando @RequestParam a requisição é feita pela url ficando localhost:8080/groups?groupId=1
-        groupService.deleteGroup(groupId);
+        Integer userId = ((AuthUser) authentication.getPrincipal()).getUser().getId();
+        groupService.deleteGroup(userId,groupId);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 }

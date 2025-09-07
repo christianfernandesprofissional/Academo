@@ -6,7 +6,6 @@ import com.academo.repository.GroupRepository;
 import com.academo.service.user.UserServiceImpl;
 import com.academo.util.exceptions.NotAllowedInsertionException;
 import com.academo.util.exceptions.group.GroupNotFoundException;
-import com.academo.util.exceptions.group.GroupUserIdChangedException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -44,20 +43,17 @@ public class GroupServiceImpl implements IGroupService {
 
     @Override
     public Group updateGroup(Integer userId, Group group) {
-        if (!groupRepository.existsById(group.getId())) throw new GroupNotFoundException();
-
-        User user = userService.findById(userId);
-        Group groupDb = groupRepository.findById(group.getId()).get();
-
-        if (!user.getId().equals(groupDb.getUser().getId())) throw new NotAllowedInsertionException();
-        
-        group.setUser(user);
+        Group groupDb = groupRepository.findById(group.getId()).orElseThrow(GroupNotFoundException::new);
+        if (!groupDb.getUser().getId().equals(userId)) throw new NotAllowedInsertionException();
+        group.setUser(groupDb.getUser());
         return groupRepository.save(group);
     }
 
     @Override
-    public void deleteGroup(Integer id) {
-        groupRepository.deleteById(id);
+    public void deleteGroup(Integer userId, Integer groupId) {
+        Group groupDb = groupRepository.findById(groupId).orElseThrow(GroupNotFoundException::new);
+        if (!groupDb.getUser().getId().equals(userId)) throw new NotAllowedInsertionException("Deleção inválida!");
+        groupRepository.deleteById(groupId);
     }
 
 

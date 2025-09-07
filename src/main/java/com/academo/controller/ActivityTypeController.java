@@ -42,7 +42,7 @@ public class ActivityTypeController {
     @GetMapping()
     public ResponseEntity<ActivityTypeDTO> getActivity(Authentication authentication, @RequestParam Integer id) {
         Integer userId = ((AuthUser) authentication.getPrincipal()).getUser().getId();
-        ActivityType activityType = activityTypeService.findByIdAndUserId(id, userId).orElseThrow(ActivityTypeNotFoundException::new);
+        ActivityType activityType = activityTypeService.findByIdAndUserId(userId,id);
         ActivityTypeDTO activityTypeDTO = new ActivityTypeDTO(activityType.getId(), activityType.getName(), activityType.getDescription());
         return ResponseEntity.ok(activityTypeDTO);
     }
@@ -67,8 +67,9 @@ public class ActivityTypeController {
 
     // Deleção
     @DeleteMapping
-    public ResponseEntity<ActivityType> deleteActivityType(Authentication authentication, @RequestParam Integer id) {
-        activityTypeService.deleteActivityType(id);
+    public ResponseEntity<ActivityType> deleteActivityType(Authentication authentication, @RequestParam Integer activityTypeId) {
+        Integer userId = ((AuthUser) authentication.getPrincipal()).getUser().getId();
+        activityTypeService.deleteActivityType(userId, activityTypeId);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 }

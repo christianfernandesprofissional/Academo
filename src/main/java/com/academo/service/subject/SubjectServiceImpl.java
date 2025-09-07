@@ -1,10 +1,13 @@
 package com.academo.service.subject;
 
+import com.academo.model.Activity;
 import com.academo.model.Subject;
 import com.academo.model.User;
 import com.academo.repository.SubjectRepository;
 import com.academo.repository.UserRepository;
 import com.academo.service.user.UserServiceImpl;
+import com.academo.util.exceptions.NotAllowedInsertionException;
+import com.academo.util.exceptions.activity.ActivityNotFoundException;
 import com.academo.util.exceptions.subject.SubjectNotFoundException;
 import com.academo.util.exceptions.user.UserNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,13 +34,9 @@ public class SubjectServiceImpl implements ISubjectService {
 
     @Override
     public Subject create(Subject subject, Integer userId) {
-        User user = userRepository.findById(userId).orElse(null);
-        if (user == null) {
-            throw new UserNotFoundException();
-        }
-        Subject createdSubject = subjectRepository.save(subject);
-        createdSubject.setUser(user);
-        return createdSubject;
+        User user = userRepository.findById(userId).orElseThrow(UserNotFoundException::new);
+        subject.setUser(user);
+         return subjectRepository.save(subject);
     }
 
     @Override
@@ -47,9 +46,18 @@ public class SubjectServiceImpl implements ISubjectService {
 
     @Override
     public Subject updateSubject(Integer userId, Subject subject) {
-        // Fazer a implementação do encontrar
+        Subject inDb = subjectRepository.findById(subject.getId()).orElseThrow(SubjectNotFoundException::new);
+        if(!inDb.getUser().getId().equals(userId)) throw new NotAllowedInsertionException();
         User user = userService.findById(userId);
         subject.setUser(user);
         return subjectRepository.save(subject);
-        }
+    }
+
+    @Override
+    public void deleteSubject(Integer userId, Integer subjectId){
+        Subject inDb = subjectRepository.findById(subjectId).orElseThrow(SubjectNotFoundException::new);
+        if(!inDb.getUser().getId().equals(userId)) throw new NotAllowedInsertionException("Deleção inválida!");
+        subjectRepository.deleteById(subjectId);
+    }
+
 }

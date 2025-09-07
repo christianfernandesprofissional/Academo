@@ -10,5 +10,5 @@ public interface ISubjectService {
     public Subject getSubjectByIdAndUserId(Integer userId, Integer subjectId);
     public Subject create(Subject subject, Integer userId);
     public Subject updateSubject(Integer userId, Subject subject);
-
+    public void deleteSubject(Integer userId, Integer subject);
 }

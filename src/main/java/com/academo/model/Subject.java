@@ -1,5 +1,6 @@
 package com.academo.model;
 
+import com.academo.controller.dtos.subject.SubjectDTO;
 import jakarta.persistence.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
@@ -46,7 +47,11 @@ public class Subject {
         this.name = name;
         this.description = description;
     }
-
+    public Subject(SubjectDTO subjectDTO) {
+        this.id = subjectDTO.id();
+        this.name = subjectDTO.name();
+        this.description = subjectDTO.description();
+    }
     public int getId() {
         return id;
     }

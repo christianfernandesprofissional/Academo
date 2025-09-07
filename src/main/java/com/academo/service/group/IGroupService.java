@@ -11,6 +11,6 @@ public interface IGroupService{
     public Group insertGroup(Integer userId, Group group);
     public Group updateGroup(Integer userId, Group group);
 
-    public void deleteGroup(Integer id);
+    public void deleteGroup(Integer userId, Integer groupId);
 
 }

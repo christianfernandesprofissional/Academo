@@ -54,7 +54,7 @@ public  class ActivityServiceImp implements IActivityService{
     @Override
     public void deleteActivity(Integer userId,Integer activityId) {
         Activity inDb = activityRepository.findById(activityId).orElseThrow(ActivityNotFoundException::new);
-        if(!inDb.getUser().getId().equals(userId)) throw new NotAllowedInsertionException();
+        if(!inDb.getUser().getId().equals(userId)) throw new NotAllowedInsertionException("Deleção inválida!");
         activityRepository.deleteById(activityId);
     }
 
@@ -77,7 +77,7 @@ public  class ActivityServiceImp implements IActivityService{
      */
     private Activity fillActivity(Activity activity, Integer userId, Integer activityTypeId, Integer subjectId){
         User user = userService.findById(userId);
-        ActivityType activityType = activityTypeService.findById(activityTypeId);
+        ActivityType activityType = activityTypeService.findByIdAndUserId(userId,activityTypeId);
         Subject subject = subjectService.getSubjectByIdAndUserId(userId, subjectId);
         activity.setActivityType(activityType);
         activity.setSubject(subject);
