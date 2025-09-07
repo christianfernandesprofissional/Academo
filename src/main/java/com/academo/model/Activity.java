@@ -1,5 +1,7 @@
 package com.academo.model;
 
+import com.academo.controller.dtos.activity.ActivityPostDTO;
+import com.academo.controller.dtos.activity.ActivityPutDTO;
 import jakarta.persistence.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
@@ -22,8 +24,11 @@ public class Activity {
     @Column(name = "name")
     private String name;
 
-    @Column(name = "Description")
+    @Column(name = "description")
     private String description;
+
+    @Column(name = "value")
+    private double value;
 
     @ManyToOne
     @JoinColumn(name = "user_id")
@@ -35,15 +40,30 @@ public class Activity {
 
     @ManyToOne
     @JoinColumn(name = "activity_type_id")
-    private TypeActivity typeActivity;
+    private ActivityType activityType;
 
-    @Column(name = "created_at")
+    @Column(name = "created_at", updatable = false)
     @CreationTimestamp
     private LocalDateTime createdAt;
 
     @Column(name = "updated_at")
     @UpdateTimestamp
     private LocalDateTime updatedAt;
+
+    public Activity() {}
+
+    public Activity(ActivityPostDTO dto){
+        this.name = dto.name();
+        this.description = dto.description();
+        this.date = dto.date();
+    }
+
+    public Activity(ActivityPutDTO dto){
+        this.id = dto.id();
+        this.name = dto.name();
+        this.description = dto.description();
+        this.date = dto.date();
+    }
 
     public int getId() {
         return id;
@@ -93,11 +113,11 @@ public class Activity {
         this.subject = subject;
     }
 
-    public TypeActivity getTypeActivity() {
-        return typeActivity;
+    public ActivityType getActivityType() {
+        return activityType;
     }
-    public void setTypeActivity(TypeActivity typeActivity) {
-        this.typeActivity = typeActivity;
+    public void setActivityType(ActivityType activityType) {
+        this.activityType = activityType;
     }
 
     public LocalDateTime getCreatedAt() {
@@ -116,5 +136,11 @@ public class Activity {
         this.updatedAt = updatedAt;
     }
 
+    public double getValue() {
+        return value;
+    }
 
+    public void setValue(double value) {
+        this.value = value;
+    }
 }

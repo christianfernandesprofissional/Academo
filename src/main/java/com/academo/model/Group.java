@@ -29,7 +29,7 @@ public class Group {
     @Column(name = "is_active")
     private boolean isActive;
 
-    @Column(name = "created_at")
+    @Column(name = "created_at", updatable = false)
     @CreationTimestamp
     private LocalDateTime createdAt;
 
@@ -37,10 +37,27 @@ public class Group {
     @UpdateTimestamp
     private LocalDateTime updatedAt;
 
-    @OneToMany(mappedBy = "group")
-    private List<GroupSubject> subjectList;
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(name = "tb_groups_subjects",
+            joinColumns = @JoinColumn(name = "id_group"),
+            inverseJoinColumns = @JoinColumn(name = "id_subject"))
+    private List<Subject> subjects;
 
     public Group() {
+    }
+
+    public Group(int id, String name, String description, User user) {
+        this.id = id;
+        this.name = name;
+        this.description = description;
+        this.user = user;
+        this.isActive = true;
+    }
+
+    public Group(String name, String description) {
+        this.name = name;
+        this.description = description;
+        this.isActive = true;
     }
 
     public int getId() {
@@ -99,13 +116,15 @@ public class Group {
         this.updatedAt = updatedAt;
     }
 
-    public List<GroupSubject> getSubjectList() {
-        return subjectList;
+    public List<Subject> getSubjects() {
+        return subjects;
     }
 
-    public void setSubjectList(List<GroupSubject> subjectList) {
-        this.subjectList = subjectList;
+    public void setSubjects(List<Subject> subjects) {
+        this.subjects = subjects;
     }
+
+
 
     @Override
     public boolean equals(Object o) {

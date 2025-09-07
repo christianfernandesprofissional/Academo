@@ -8,7 +8,7 @@ import java.time.LocalDateTime;
 
 @Entity
 @Table(name="tb_type_activities")
-public class TypeActivity {
+public class ActivityType {
     // id, name, description, userid, createdAt, updatedAt
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -25,13 +25,21 @@ public class TypeActivity {
     @JoinColumn(name = "user_id")
     private User user;
 
-    @Column(name = "created_at")
+    @Column(name = "created_at", updatable = false)
     @CreationTimestamp
     private LocalDateTime createdAt;
 
     @Column(name = "updated_at")
     @UpdateTimestamp
     private LocalDateTime updatedAt;
+
+    public ActivityType() {
+    }
+
+    public ActivityType(String name, String description) {
+        this.setName(name);
+        this.setDescription(description);
+    }
 
     public Integer getId() {
         return id;
