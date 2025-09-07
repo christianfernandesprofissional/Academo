@@ -55,4 +55,11 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
     private ResponseEntity<String> userNotFoundHandler(UserNotFoundException exception) {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Usuário não encontrado!");
     }
+
+    //Inserção ou deleção de objetos que não pertecem ao usuário
+    @ExceptionHandler(NotAllowedInsertionException.class)
+    private ResponseEntity<String> userNotFoundHandler(NotAllowedInsertionException exception) {
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(exception.getMessage());
+    }
+
 }

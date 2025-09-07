@@ -1,11 +1,14 @@
 package com.academo.service.group;
 
 import com.academo.model.Group;
+import com.academo.model.Subject;
 import com.academo.model.User;
 import com.academo.repository.GroupRepository;
+import com.academo.service.subject.SubjectServiceImpl;
 import com.academo.service.user.UserServiceImpl;
 import com.academo.util.exceptions.NotAllowedInsertionException;
 import com.academo.util.exceptions.group.GroupNotFoundException;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -19,6 +22,9 @@ public class GroupServiceImpl implements IGroupService {
 
     @Autowired
     private UserServiceImpl userService;
+
+    @Autowired
+    SubjectServiceImpl subjectService;
 
     // Lista todos os grupos pelo usuário
     @Override
@@ -56,5 +62,50 @@ public class GroupServiceImpl implements IGroupService {
         groupRepository.deleteById(groupId);
     }
 
+    @Override
+    @Transactional
+    public Group addSubjectToGroup(Integer userId, Integer groupId, Integer subjectId) {
+        Group group = verifyGroup(userId, groupId);
+        Subject subject = verifySubject(userId, subjectId);
+
+        group.getSubjects().add(subject);
+        return groupRepository.save(group);
+    }
+
+    @Override
+    @Transactional
+    public Group deleteSubjectFromGroup(Integer userId, Integer groupId, Integer subjectId) {
+        Group group = verifyGroup(userId, groupId);
+        Subject subject = verifySubject(userId, subjectId);
+
+        group.getSubjects().remove(subject);
+        return groupRepository.save(group);
+    }
+
+    /**
+     * Verifica se o grupo pertence ao mesmo usuário,
+     *
+     * @param userId id do usuário
+     * @param groupId id do grupo
+     * @return Group
+     */
+    private Group verifyGroup(Integer userId, Integer groupId){
+        Group group = groupRepository.findById(groupId).orElseThrow(GroupNotFoundException::new);
+        if(!group.getUser().getId().equals(userId)) throw new NotAllowedInsertionException();
+        return group;
+    }
+
+    /**
+     * Verifica se o Subject pertence ao mesmo usuário,
+     *
+     * @param userId id do usuário
+     * @param subjectId id do subject
+     * @return Subject
+     */
+    private Subject verifySubject(Integer userId, Integer subjectId){
+        Subject subject = subjectService.getSubjectByIdAndUserId(subjectId, userId);
+        if(!subject.getUser().getId().equals(userId)) throw new NotAllowedInsertionException();
+        return subject;
+    }
 
 }
