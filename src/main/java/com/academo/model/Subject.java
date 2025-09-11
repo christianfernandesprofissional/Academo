@@ -42,6 +42,12 @@ public class Subject {
     @JsonIgnore
     private List<Group> groups;
 
+    @OneToMany(mappedBy = "subject",
+            cascade = CascadeType.ALL,
+            orphanRemoval = true)
+    @JsonIgnore 
+    private List<Activity> activities;
+
     public Subject() {
     }
 
