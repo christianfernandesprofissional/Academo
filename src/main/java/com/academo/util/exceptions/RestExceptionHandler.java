@@ -2,6 +2,8 @@ package com.academo.util.exceptions;
 
 import com.academo.util.exceptions.activity.ActivityExistsException;
 import com.academo.util.exceptions.activity.ActivityNotFoundException;
+import com.academo.util.exceptions.activityType.ActivityTypeExistsException;
+import com.academo.util.exceptions.activityType.ActivityTypeNotFoundException;
 import com.academo.util.exceptions.group.GroupNotFoundException;
 import com.academo.util.exceptions.profile.ProfileNotFoundException;
 import com.academo.util.exceptions.subject.SubjectNotFoundException;
@@ -45,9 +47,14 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
     }
 
     //ActivityType
-    @ExceptionHandler(TypeNotPresentException.class)
-    private ResponseEntity<String> typeActivityNotFoundException(TypeNotPresentException exception) {
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).body("TIpo de Atividade não encontrado!");
+    @ExceptionHandler(ActivityTypeNotFoundException.class)
+    private ResponseEntity<String> typeActivityNotFoundException(ActivityTypeNotFoundException exception) {
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Tipo de Atividade não encontrado!");
+    }
+
+    @ExceptionHandler(ActivityTypeExistsException.class)
+    private ResponseEntity<String> typeActivityNotFoundException(ActivityTypeExistsException exception) {
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Tipo de Atividade já existe!");
     }
 
     //User

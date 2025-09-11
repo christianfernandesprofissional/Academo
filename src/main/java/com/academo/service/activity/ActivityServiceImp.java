@@ -78,7 +78,7 @@ public  class ActivityServiceImp implements IActivityService{
     private Activity fillActivity(Activity activity, Integer userId, Integer activityTypeId, Integer subjectId){
         User user = userService.findById(userId);
         ActivityType activityType = activityTypeService.findByIdAndUserId(activityTypeId, userId);
-        Subject subject = subjectService.getSubjectByIdAndUserId(userId, subjectId);
+        Subject subject = subjectService.getSubjectByIdAndUserId(subjectId, userId);
         activity.setActivityType(activityType);
         activity.setSubject(subject);
         activity.setUser(user);

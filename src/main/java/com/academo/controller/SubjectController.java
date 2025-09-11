@@ -64,9 +64,9 @@ public class SubjectController {
     }
 
     @DeleteMapping
-    public ResponseEntity<Activity> deleteActivity(Authentication authentication, @RequestParam Integer activityId) {
+    public ResponseEntity<Activity> deleteActivity(Authentication authentication, @RequestParam Integer subjectId) {
         Integer userId = ((AuthUser) authentication.getPrincipal()).getUser().getId();
-        service.deleteSubject(userId, activityId);
+        service.deleteSubject(userId, subjectId);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 
