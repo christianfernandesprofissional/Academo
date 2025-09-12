@@ -18,6 +18,7 @@ public class ProfileController {
     @Autowired
     private ProfileServiceImpl service;
 
+
     @GetMapping
     public ResponseEntity<Profile> getProfile(Authentication authentication) {
         Integer userId = ((AuthUser) authentication.getPrincipal()).getUser().getId();
