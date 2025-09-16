@@ -19,10 +19,10 @@ public class Activity {
     private Integer id;
 
     @Column(name = "activity_date")
-    private LocalDate activity_date;
+    private LocalDate activityDate;
 
     @Column(name = "notification_date")
-    private LocalDate notification_date;
+    private LocalDate notificationDate;
 
     @Column(name = "name")
     private String name;
@@ -65,7 +65,7 @@ public class Activity {
         this.id = dto.id();
         this.name = dto.name();
         this.description = dto.description();
-        this.activity_date = dto.date();
+        this.activity_date = dto.activityDate();
     }
 
     public int getId() {
