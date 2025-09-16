@@ -16,10 +16,13 @@ public class Activity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
-    private int id;
+    private Integer id;
 
-    @Column(name = "date")
-    private LocalDate date;
+    @Column(name = "activity_date")
+    private LocalDate activity_date;
+
+    @Column(name = "notification_date")
+    private LocalDate notification_date;
 
     @Column(name = "name")
     private String name;
@@ -28,7 +31,7 @@ public class Activity {
     private String description;
 
     @Column(name = "value")
-    private double value;
+    private Double value;
 
     @ManyToOne
     @JoinColumn(name = "user_id")
@@ -55,14 +58,14 @@ public class Activity {
     public Activity(ActivityPostDTO dto){
         this.name = dto.name();
         this.description = dto.description();
-        this.date = dto.date();
+        this.activity_date = dto.date();
     }
 
     public Activity(ActivityPutDTO dto){
         this.id = dto.id();
         this.name = dto.name();
         this.description = dto.description();
-        this.date = dto.date();
+        this.activity_date = dto.date();
     }
 
     public int getId() {
@@ -73,12 +76,12 @@ public class Activity {
         this.id = id;
     }
 
-    public LocalDate getDate() {
-        return date;
+    public LocalDate getActivity_date() {
+        return activity_date;
     }
 
-    public void setDate(LocalDate date) {
-        this.date = date;
+    public void setActivity_date(LocalDate activity_date) {
+        this.activity_date = activity_date;
     }
 
     public String getName() {
@@ -142,5 +145,13 @@ public class Activity {
 
     public void setValue(double value) {
         this.value = value;
+    }
+
+    public LocalDate getNotification_date() {
+        return notification_date;
+    }
+
+    public void setNotification_date(LocalDate notification_date) {
+        this.notification_date = notification_date;
     }
 }

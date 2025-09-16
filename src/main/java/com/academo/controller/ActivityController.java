@@ -31,7 +31,7 @@ public class ActivityController {
                .stream()
                .map(a -> new ActivityDTO(
                        a.getId(),
-                       a.getDate(),
+                       a.getActivity_date(),
                        a.getName(),
                        a.getDescription(),
                        a.getSubject() != null ? a.getSubject().getName() : null,
