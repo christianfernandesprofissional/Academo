@@ -58,14 +58,14 @@ public class Activity {
     public Activity(ActivityPostDTO dto){
         this.name = dto.name();
         this.description = dto.description();
-        this.activity_date = dto.date();
+        this.activityDate = dto.date();
     }
 
     public Activity(ActivityPutDTO dto){
         this.id = dto.id();
         this.name = dto.name();
         this.description = dto.description();
-        this.activity_date = dto.activityDate();
+        this.activityDate = dto.activityDate();
     }
 
     public int getId() {
@@ -77,11 +77,11 @@ public class Activity {
     }
 
     public LocalDate getActivity_date() {
-        return activity_date;
+        return activityDate;
     }
 
     public void setActivity_date(LocalDate activity_date) {
-        this.activity_date = activity_date;
+        this.activityDate = activity_date;
     }
 
     public String getName() {
@@ -148,10 +148,10 @@ public class Activity {
     }
 
     public LocalDate getNotification_date() {
-        return notification_date;
+        return notificationDate;
     }
 
     public void setNotification_date(LocalDate notification_date) {
-        this.notification_date = notification_date;
+        this.notificationDate = notification_date;
     }
 }
