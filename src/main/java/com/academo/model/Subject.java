@@ -59,6 +59,7 @@ public class Subject {
         this.id = subjectDTO.id();
         this.name = subjectDTO.name();
         this.description = subjectDTO.description();
+        this.isActive = subjectDTO.isActive();
     }
     public int getId() {
         return id;

@@ -35,7 +35,7 @@ public class GroupController {
                         g.getIsActive(),
                         //A lista de Subject do grupo é transformada em uma lista de SubjectDTO
                         g.getSubjects().stream()
-                                .map(s -> new SubjectDTO(s.getId(), s.getName(), s.getDescription())).toList()
+                                .map(s -> new SubjectDTO(s.getId(), s.getName(), s.getDescription(), s.isActive())).toList()
                 )).toList();
 
         return ResponseEntity.ok(groups);
@@ -51,7 +51,8 @@ public class GroupController {
                 .map(s -> new SubjectDTO(
                         s.getId(),
                         s.getName(),
-                        s.getDescription()
+                        s.getDescription(),
+                        s.isActive()
                 )).toList();
         GroupDTO groupDTO = new GroupDTO(group.getId(), group.getName(), group.getDescription(),group.getIsActive(), subjects);
         return ResponseEntity.ok(groupDTO);
@@ -91,7 +92,8 @@ public class GroupController {
                 .map(s -> new SubjectDTO(
                         s.getId(),
                         s.getName(),
-                        s.getDescription()
+                        s.getDescription(),
+                        s.isActive()
                 )).toList();
         GroupDTO groupDTO = new GroupDTO(group.getId(), group.getName(), group.getDescription(), group.getIsActive(), subjects);
         return ResponseEntity.ok(groupDTO);
@@ -105,7 +107,8 @@ public class GroupController {
                 .map(s -> new SubjectDTO(
                         s.getId(),
                         s.getName(),
-                        s.getDescription()
+                        s.getDescription(),
+                        s.isActive()
                 )).toList();
         GroupDTO groupDTO = new GroupDTO(group.getId(), group.getName(), group.getDescription(), group.getIsActive(), subjects);
         return ResponseEntity.ok(groupDTO);

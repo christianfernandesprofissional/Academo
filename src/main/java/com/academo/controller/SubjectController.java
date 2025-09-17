@@ -1,6 +1,7 @@
 package com.academo.controller;
 
 import com.academo.controller.dtos.subject.SubjectDTO;
+import com.academo.controller.dtos.subject.SubjectGetDTO;
 import com.academo.controller.dtos.subject.SubjectPostDTO;
 import com.academo.model.Activity;
 import com.academo.model.Subject;
@@ -36,23 +37,26 @@ public class SubjectController {
     }
 
     @GetMapping("/all")
-    public ResponseEntity<List<SubjectDTO>> getSubjects(Authentication authentication) {
+    public ResponseEntity<List<SubjectGetDTO>> getSubjects(Authentication authentication) {
         Integer userId = ((AuthUser) authentication.getPrincipal()).getUser().getId();
-        List<SubjectDTO> subjects = service.findAll(userId)
+        List<SubjectGetDTO> subjects = service.findAll(userId)
                 .stream()
-                .map(g -> new SubjectDTO(
+                .map(g -> new SubjectGetDTO(
                         g.getId(),
                         g.getName(),
-                        g.getDescription())).toList();
+                        g.getDescription(),
+                        g.isActive(),
+                        g.getCreatedAt(),
+                        g.getUpdatedAt())).toList();
         return ResponseEntity.ok(subjects);
     }
 
     @GetMapping
-    public ResponseEntity<SubjectDTO> getSubject(Authentication authentication, @RequestParam Integer subjectId) {
+    public ResponseEntity<SubjectGetDTO> getSubject(Authentication authentication, @RequestParam Integer subjectId) {
         Integer userId = ((AuthUser) authentication.getPrincipal()).getUser().getId();
         Subject subject = service.getSubjectByIdAndUserId(userId, subjectId);
-        SubjectDTO subjectDTO = new SubjectDTO(subject.getId(), subject.getName(), subject.getDescription());
-        return ResponseEntity.ok(subjectDTO);
+        SubjectGetDTO subjectGetDTO = new SubjectGetDTO(subject.getId(), subject.getName(), subject.getDescription(), subject.isActive(), subject.getCreatedAt(), subject.getUpdatedAt());
+        return ResponseEntity.ok(subjectGetDTO);
     }
 
     @PutMapping
