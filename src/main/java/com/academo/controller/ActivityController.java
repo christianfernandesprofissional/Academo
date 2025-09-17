@@ -3,6 +3,7 @@ package com.academo.controller;
 import com.academo.controller.dtos.activity.ActivityDTO;
 import com.academo.controller.dtos.activity.ActivityPostDTO;
 import com.academo.controller.dtos.activity.ActivityPutDTO;
+import com.academo.controller.dtos.notification.NotificationDTO;
 import com.academo.model.Activity;
 import com.academo.security.authuser.AuthUser;
 import com.academo.service.activity.ActivityServiceImp;
@@ -72,5 +73,10 @@ public class ActivityController {
         Integer userId = ((AuthUser) authentication.getPrincipal()).getUser().getId();
         activityService.deleteActivity(userId,activityId);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+    }
+
+    @GetMapping("/teste")
+    public ResponseEntity<List<NotificationDTO>> teste(){
+        return ResponseEntity.ok(activityService.teste());
     }
 }
