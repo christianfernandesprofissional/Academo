@@ -2,10 +2,7 @@ package com.academo.controller;
 
 import com.academo.model.User;
 import com.academo.repository.UserRepository;
-import com.academo.security.authuser.AuthUser;
-import com.academo.security.authuser.LoginResponseDTO;
-import com.academo.security.authuser.RegisterDTO;
-import com.academo.security.authuser.UserAuthDTO;
+import com.academo.security.authuser.*;
 import com.academo.security.service.TokenService;
 import com.academo.service.profile.ProfileServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
