@@ -89,8 +89,8 @@ public  class ActivityServiceImp implements IActivityService{
         return activity;
     }
 
-    public void teste(){
-        new SendNotifications(activityRepository.searchNotificationByDate(LocalDate.now()));
+    public List<NotificationDTO> teste(){
+        return activityRepository.searchNotificationByDate(LocalDate.now());
     }
 
 }

@@ -6,6 +6,6 @@ public record ActivityNotificationDTO(
         String name,
         String description,
         String subject,
-        Date activityDate,
-        Date notificationDate
+        LocalDate activityDate,
+        LocalDate notificationDate
 ) {}

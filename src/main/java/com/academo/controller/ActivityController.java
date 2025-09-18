@@ -9,6 +9,7 @@ import com.academo.security.authuser.AuthUser;
 import com.academo.service.activity.ActivityServiceImp;
 import com.academo.util.exceptions.activity.ActivityExistsException;
 import com.academo.util.exceptions.activity.ActivityNotFoundException;
+import com.academo.util.notification.SendNotifications;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -24,6 +25,9 @@ public class ActivityController {
 
     @Autowired
     private ActivityServiceImp  activityService;
+
+    @Autowired
+    private SendNotifications sendNotifications;
 
     @GetMapping("/all")
     public ResponseEntity<List<ActivityDTO>> getActivities(Authentication authentication) {
@@ -77,6 +81,6 @@ public class ActivityController {
 
     @GetMapping("/teste")
     public void teste(Authentication authentication){
-        activityService.teste();
+        sendNotifications.sendEmails(activityService.teste());
     }
 }
