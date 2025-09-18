@@ -76,7 +76,7 @@ public class ActivityController {
     }
 
     @GetMapping("/teste")
-    public ResponseEntity<List<NotificationDTO>> teste(){
-        return ResponseEntity.ok(activityService.teste());
+    public void teste(Authentication authentication){
+        activityService.teste();
     }
 }

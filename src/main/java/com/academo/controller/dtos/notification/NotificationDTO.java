@@ -6,16 +6,15 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.util.List;
 
-public record NotificationDTO(
+public class NotificationDTO
+{
+    private String email;
+    private List<ActivityNotificationDTO> activityNotificationDTOS;
+    private static final ObjectMapper mapper = new ObjectMapper();
 
-        String email,
-        List<ActivityNotificationDTO> activityNotificationDTOS
-
-){    private static final ObjectMapper mapper = new ObjectMapper();
-
-    // Construtor alternativo usado pelo Spring Data JPA
     public NotificationDTO(String email, String activitiesJson) {
-        this(email, parseActivities(activitiesJson));
+        this.email = email;
+        this.activityNotificationDTOS = parseActivities(activitiesJson);
     }
 
     private static List<ActivityNotificationDTO> parseActivities(String activitiesJson) {
@@ -24,5 +23,21 @@ public record NotificationDTO(
         } catch (Exception e) {
             throw new RuntimeException("Erro ao parsear JSON", e);
         }
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public List<ActivityNotificationDTO> getActivityNotificationDTOS() {
+        return activityNotificationDTOS;
+    }
+
+    public void setActivityNotificationDTOS(List<ActivityNotificationDTO> activityNotificationDTOS) {
+        this.activityNotificationDTOS = activityNotificationDTOS;
     }
 }

@@ -12,6 +12,7 @@ import com.academo.service.subject.SubjectServiceImpl;
 import com.academo.service.user.UserServiceImpl;
 import com.academo.util.exceptions.NotAllowedInsertionException;
 import com.academo.util.exceptions.activity.ActivityNotFoundException;
+import com.academo.util.notification.SendNotifications;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -88,8 +89,8 @@ public  class ActivityServiceImp implements IActivityService{
         return activity;
     }
 
-    public List<NotificationDTO> teste(){
-        return activityRepository.searchNotificationByDate(LocalDate.now());
+    public void teste(){
+        new SendNotifications(activityRepository.searchNotificationByDate(LocalDate.now()));
     }
 
 }
