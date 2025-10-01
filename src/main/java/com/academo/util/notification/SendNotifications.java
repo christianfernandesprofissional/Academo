@@ -2,13 +2,20 @@ package com.academo.util.notification;
 
 import com.academo.controller.dtos.activity.ActivityNotificationDTO;
 import com.academo.controller.dtos.notification.NotificationDTO;
+import jakarta.mail.MessagingException;
+import jakarta.mail.internet.MimeMessage;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
+import org.thymeleaf.TemplateEngine;
+import org.thymeleaf.context.Context;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 @Service
@@ -17,26 +24,34 @@ public class SendNotifications {
     @Autowired
     private JavaMailSender mailSender;
 
-    public void sendEmails(List<NotificationDTO> notificationDTOList){
-        // Para cada notificação
+    @Autowired
+    private TemplateEngine templateEngine;
+
+    public void sendEmails(List<NotificationDTO> notificationDTOList) throws MessagingException {
         for (NotificationDTO n : notificationDTOList){
 
-            SimpleMailMessage email = new SimpleMailMessage();
-            email.setTo(n.getEmail());
-            email.setSubject("ACADEMO - Atividades Próximas");
+            n.setActivityNotificationDTOS(
+                    n.getActivityNotificationDTOS()
+                            .stream()
+                            .sorted(Comparator.comparing(ActivityNotificationDTO::activityDate))
+                            .toList());
 
-            email.setText("Olá, segue atividades próximas:\n\n");
-            email.setText(email.getText() + "Atividade\tDescrição\tMatéria\tData\n");
+            Context context = new Context();
+            context.setVariable("atividades", n.getActivityNotificationDTOS());
 
+            String htmlContent = templateEngine.process("NotificationTemplate", context);
 
-            // Constroe tabela de atividades pendentes
-            for (ActivityNotificationDTO a : n.getActivityNotificationDTOS()){
-                email.setText(email.getText() + String.format("%s\t%S\t%s\t%s\n", a.name(), a.description(), a.subject(), a.activityDate().format(DateTimeFormatter.ofPattern("dd/MM/yyyy"))));
-            }
-            email.setFrom("Equipe ACADEMO <" + System.getenv("MAIL_USERNAME").trim() + ">");
+            MimeMessage message = mailSender.createMimeMessage();
+            MimeMessageHelper helper = new MimeMessageHelper(message, true, "UTF-8");
 
-            mailSender.send(email);
+            helper.setSubject("ACADEMO - Atividades Próximas");
+            helper.setFrom("Equipe ACADEMO <" + System.getenv("MAIL_USERNAME").trim() + ">");
+            helper.setTo(n.getEmail());
+            helper.setText(htmlContent, true);
+
+            mailSender.send(message);
         }
-
     }
+
+
 }

@@ -1,18 +1,18 @@
-package com.academo.util.jobs.notification;
+package com.academo.util.QuartzSchedule.notification;
 
 import com.academo.repository.ActivityRepository;
 import com.academo.util.notification.SendNotifications;
-import org.quartz.JobDetail;
+import jakarta.mail.MessagingException;
+import org.quartz.Job;
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.scheduling.quartz.QuartzJobBean;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;
 
 @Component
-public class NotificationJob extends QuartzJobBean {
+public class NotificationJob implements Job {
 
     @Autowired
     SendNotifications sendNotifications;
@@ -21,8 +21,12 @@ public class NotificationJob extends QuartzJobBean {
     ActivityRepository activityRepository;
 
     @Override
-    protected void executeInternal(JobExecutionContext jobExecutionContext) throws JobExecutionException {
-        sendNotifications.sendEmails(activityRepository.searchNotificationByDate(LocalDate.now()));
+    public void execute(JobExecutionContext context) throws JobExecutionException {
+        try {
+            sendNotifications.sendEmails(activityRepository.searchNotificationByDate(LocalDate.now()));
+        } catch (MessagingException e) {
+            throw new RuntimeException(e);
+        }
     }
 
 }

@@ -10,6 +10,7 @@ import com.academo.service.activity.ActivityServiceImp;
 import com.academo.util.exceptions.activity.ActivityExistsException;
 import com.academo.util.exceptions.activity.ActivityNotFoundException;
 import com.academo.util.notification.SendNotifications;
+import jakarta.mail.MessagingException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -80,7 +81,7 @@ public class ActivityController {
     }
 
     @GetMapping("/teste")
-    public void teste(Authentication authentication){
+    public void teste(Authentication authentication) throws MessagingException {
         sendNotifications.sendEmails(activityService.teste());
     }
 }
