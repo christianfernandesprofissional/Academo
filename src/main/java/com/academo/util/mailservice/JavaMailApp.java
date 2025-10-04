@@ -26,4 +26,18 @@ public class JavaMailApp {
 
         mailSender.send(email);
     }
+
+    public void enviarEmailDeAtivacao(String destinatario, String token){
+        String urlDeAtivacao = "http://localhost:80/user/activate?value="+token;
+        SimpleMailMessage email = new SimpleMailMessage();
+        email.setTo(destinatario);
+        email.setSubject("Ative sua conta!");
+        email.setText("""
+                Olá,
+
+                Ative sua conta para poder utilizar o Academo.
+                Acesse o link abaixo para ativação:
+                
+                """ + urlDeAtivacao + " \n");
+    }
 }

@@ -9,7 +9,7 @@ import org.springframework.context.annotation.Configuration;
 
 @Configuration
 public class QuartzTriggerConfig {
-    @Bean
+   @Bean
     public Trigger notificationTrigger(JobDetail jobDetail){
         return TriggerBuilder.newTrigger()
                 .forJob(jobDetail)

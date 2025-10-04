@@ -11,7 +11,6 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -35,7 +34,7 @@ public class UserController {
         UsernamePasswordAuthenticationToken userPass = new UsernamePasswordAuthenticationToken(user.username(), user.password());
         Authentication auth = authenticationManager.authenticate(userPass);
 
-        var token = tokenService.generateToken((AuthUser) auth.getPrincipal());
+        var token = tokenService.generateLoginToken((AuthUser) auth.getPrincipal());
 
         return ResponseEntity.ok(new LoginResponseDTO(token));
     }
@@ -49,6 +48,14 @@ public class UserController {
         User user = new  User(register.name(), encryptedPassword,register.email());
         User createdUser = userRepository.save(user);
         profileService.create(createdUser);
+        var token = tokenService.generateActivationToken(createdUser.getId());
+
+        return ResponseEntity.ok().build();
+    }
+
+    @PostMapping("/activate")
+    public ResponseEntity<?> activate(@RequestParam("value") String token) {
+
         return ResponseEntity.ok().build();
     }
 
