@@ -41,7 +41,7 @@ public class User {
         this.name = name;
         this.password = password;
         this.email = email;
-        this.isActive = true;
+        this.isActive = false;
     }
 
     public Integer getId() {
@@ -89,6 +89,10 @@ public class User {
     public void setUpdatedAt(LocalDateTime updatedAt) {
         this.updatedAt = updatedAt;
     }
+
+    public void setIsActive(Boolean active){this.isActive = active;}
+
+    public Boolean getIsActive(){return isActive;}
 
     @Override
     public String toString() {
