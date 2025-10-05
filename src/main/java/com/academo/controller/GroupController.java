@@ -1,5 +1,6 @@
 package com.academo.controller;
 
+import com.academo.controller.dtos.group.AssociateSubjectsDTO;
 import com.academo.controller.dtos.group.GroupDTO;
 import com.academo.controller.dtos.group.GroupPostDTO;
 import com.academo.controller.dtos.subject.SubjectDTO;
@@ -54,6 +55,21 @@ public class GroupController {
                         s.getDescription()
                 )).toList();
         GroupDTO groupDTO = new GroupDTO(group.getId(), group.getName(), group.getDescription(),group.getIsActive(), subjects);
+        return ResponseEntity.ok(groupDTO);
+    }
+
+    @PostMapping("associate-subjects")
+    public ResponseEntity<GroupDTO> associateSubjects(Authentication authentication, @RequestBody AssociateSubjectsDTO associateSubjectsDTO){
+        Integer userId = ((AuthUser) authentication.getPrincipal()).getUser().getId();
+        Group g = groupService.associateSubjects(userId, associateSubjectsDTO.groupId(), associateSubjectsDTO.subjectsIds());
+        Group group = groupService.updateGroup(userId, g);
+        List<SubjectDTO> subjects = group.getSubjects().stream()
+                .map(s -> new SubjectDTO(
+                        s.getId(),
+                        s.getName(),
+                        s.getDescription()
+                )).toList();
+        GroupDTO groupDTO = new GroupDTO(group.getId(), group.getName(), group.getDescription(), group.getIsActive(), subjects);
         return ResponseEntity.ok(groupDTO);
     }
 

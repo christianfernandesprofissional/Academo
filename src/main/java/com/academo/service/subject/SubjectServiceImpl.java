@@ -33,6 +33,11 @@ public class SubjectServiceImpl implements ISubjectService {
     }
 
     @Override
+    public Subject findById(Integer subjectId) {
+        return subjectRepository.findById(subjectId).orElse(null);
+    }
+
+    @Override
     public Subject create(Subject subject, Integer userId) {
         User user = userRepository.findById(userId).orElseThrow(UserNotFoundException::new);
         subject.setUser(user);
