@@ -90,9 +90,11 @@ public class GroupServiceImpl implements IGroupService {
         List<Subject> subjects = new ArrayList<>();
         for(Integer id : subjectsIds) {
             Subject subject = subjectService.findById(id);
-            subjects.add(subject);
+            if(subject != null) {
+                subjects.add(subject);
+            }
         }
-        group.setSubjects(subjects.stream().filter(Objects::nonNull).toList());
+        group.setSubjects(subjects);
         return group;
     }
 
