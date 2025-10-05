@@ -28,7 +28,8 @@ public class JavaMailApp {
     }
 
     public void enviarEmailDeAtivacao(String destinatario, String token){
-        String urlDeAtivacao = "http://localhost:8080/auth/activate?value="+token;
+        String baseUrl = System.getenv("BASE_URL");
+        String urlDeAtivacao = baseUrl+"/user/activate?value="+token;
         SimpleMailMessage email = new SimpleMailMessage();
         email.setTo(destinatario);
         email.setSubject("Ative sua conta!");
