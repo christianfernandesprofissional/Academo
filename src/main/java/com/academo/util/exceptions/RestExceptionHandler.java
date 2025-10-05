@@ -1,5 +1,8 @@
 package com.academo.util.exceptions;
 
+import com.academo.model.User;
+import com.academo.security.service.TokenService;
+import com.academo.service.user.IUserService;
 import com.academo.util.exceptions.activity.ActivityExistsException;
 import com.academo.util.exceptions.activity.ActivityNotFoundException;
 import com.academo.util.exceptions.activityType.ActivityTypeExistsException;
@@ -7,15 +10,26 @@ import com.academo.util.exceptions.activityType.ActivityTypeNotFoundException;
 import com.academo.util.exceptions.group.GroupNotFoundException;
 import com.academo.util.exceptions.profile.ProfileNotFoundException;
 import com.academo.util.exceptions.subject.SubjectNotFoundException;
+import com.academo.util.exceptions.user.UserIsNotActiveException;
 import com.academo.util.exceptions.user.UserNotFoundException;
+import com.academo.util.mailservice.JavaMailApp;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
+import java.time.LocalDateTime;
+
 @ControllerAdvice
 public class RestExceptionHandler extends ResponseEntityExceptionHandler {
+
+    @Autowired
+    private JavaMailApp mail;
+
+    @Autowired
+    private TokenService tokenService;
 
     //Activity
     @ExceptionHandler(ActivityNotFoundException.class)
@@ -69,4 +83,13 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(exception.getMessage());
     }
 
+    @ExceptionHandler(UserIsNotActiveException.class)
+    private ResponseEntity<String> userIsNotActiveHandler(UserIsNotActiveException exception) {
+        User user = exception.getUser();
+        if(!user.getTokenExpiresAt().isAfter(LocalDateTime.now())) {
+            var token = tokenService.generateActivationToken(user.getId());
+            mail.enviarEmailDeAtivacao(user.getEmail(), token);
+        }
+        return ResponseEntity.status(HttpStatus.FORBIDDEN).body("O usuário ainda não foi ativado. Confira seu email para ativar");
+    }
 }

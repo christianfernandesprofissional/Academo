@@ -27,7 +27,7 @@ public class TokenService {
             String token = JWT.create()
                     .withIssuer("academo")
                     .withSubject(user.getUsername())
-                    .withExpiresAt(generationExpirationDate())
+                    .withExpiresAt(generationExpirationDate(false))
                     .sign(algorithm);
             return token;
         } catch (JWTCreationException e) {
@@ -56,7 +56,7 @@ public class TokenService {
             String token = JWT.create()
                     .withIssuer("academo")
                     .withSubject(String.valueOf(userId))
-                    .withExpiresAt(generationExpirationDate())
+                    .withExpiresAt(generationExpirationDate(true))
                     .sign(algorithm);
             return token;
         } catch (JWTCreationException e) {
@@ -77,10 +77,12 @@ public class TokenService {
         }
     }
 
-
-
-
-    private Instant generationExpirationDate() {
+    private Instant generationExpirationDate(boolean isActivationToken) {
+        if(isActivationToken) {
+            return LocalDateTime.now().plusMinutes(1).toInstant(ZoneOffset.of("-03:00"));
+        }
         return LocalDateTime.now().plusHours(3).toInstant(ZoneOffset.of("-03:00"));
     }
+
+
 }
