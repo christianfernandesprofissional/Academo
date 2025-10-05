@@ -54,6 +54,7 @@ public class UserController {
         User createdUser = userRepository.save(user);
         profileService.create(createdUser);
         enviarEmailDeAtivacao(createdUser.getEmail(), createdUser.getId());
+        var token = tokenService.generateActivationToken(createdUser.getId());
         return ResponseEntity.ok().build();
     }
 
