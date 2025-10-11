@@ -13,6 +13,7 @@ public class UserIsNotActiveException extends RuntimeException {
 
     public UserIsNotActiveException(String message, User user) {
         super(message);
+        this.user = user;
 
     }
 

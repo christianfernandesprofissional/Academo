@@ -79,7 +79,8 @@ public class TokenService {
 
     private Instant generationExpirationDate(boolean isActivationToken) {
         if(isActivationToken) {
-            return LocalDateTime.now().plusMinutes(1).toInstant(ZoneOffset.of("-03:00"));
+            //Caso alterar o tempo, também altere em UserController e RestExceptionHandler
+            return LocalDateTime.now().plusMinutes(30).toInstant(ZoneOffset.of("-03:00"));
         }
         return LocalDateTime.now().plusHours(3).toInstant(ZoneOffset.of("-03:00"));
     }

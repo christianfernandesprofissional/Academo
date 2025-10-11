@@ -3,6 +3,7 @@ package com.academo.util.exceptions;
 import com.academo.model.User;
 import com.academo.security.service.TokenService;
 import com.academo.service.user.IUserService;
+import com.academo.service.user.UserServiceImpl;
 import com.academo.util.exceptions.activity.ActivityExistsException;
 import com.academo.util.exceptions.activity.ActivityNotFoundException;
 import com.academo.util.exceptions.activityType.ActivityTypeExistsException;
@@ -21,6 +22,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
 import java.time.LocalDateTime;
+import java.time.ZoneOffset;
 
 @ControllerAdvice
 public class RestExceptionHandler extends ResponseEntityExceptionHandler {
@@ -30,6 +32,9 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
 
     @Autowired
     private TokenService tokenService;
+
+    @Autowired
+    private UserServiceImpl userService;
 
     //Activity
     @ExceptionHandler(ActivityNotFoundException.class)
@@ -87,6 +92,9 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
     private ResponseEntity<String> userIsNotActiveHandler(UserIsNotActiveException exception) {
         User user = exception.getUser();
         if(!user.getTokenExpiresAt().isAfter(LocalDateTime.now())) {
+            LocalDateTime expiresAt = LocalDateTime.now().plusMinutes(30).plusSeconds(20).atOffset(ZoneOffset.of("-03:00")).toLocalDateTime();
+            user.setTokenExpiresAt(expiresAt);
+            userService.update(user);
             var token = tokenService.generateActivationToken(user.getId());
             mail.enviarEmailDeAtivacao(user.getEmail(), token);
         }

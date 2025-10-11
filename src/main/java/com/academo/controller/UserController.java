@@ -56,7 +56,7 @@ public class UserController {
                 userRepository.findByEmail(register.email()) != null) return ResponseEntity.badRequest().build();
         String encryptedPassword = new BCryptPasswordEncoder().encode(register.password());
         User user = new  User(register.name(), encryptedPassword,register.email());
-        LocalDateTime expiresAt = LocalDateTime.now().plusMinutes(1).atOffset(ZoneOffset.of("-03:00")).toLocalDateTime();
+        LocalDateTime expiresAt = LocalDateTime.now().plusMinutes(30).plusSeconds(20).atOffset(ZoneOffset.of("-03:00")).toLocalDateTime();
         user.setTokenExpiresAt(expiresAt);
         User createdUser = userRepository.save(user);
         profileService.create(createdUser);
