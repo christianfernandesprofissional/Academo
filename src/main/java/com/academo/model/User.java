@@ -41,7 +41,7 @@ public class User {
         this.name = name;
         this.password = password;
         this.email = email;
-        this.isActive = true;
+        this.isActive = false;
     }
 
     public Integer getId() {

@@ -28,7 +28,7 @@ public class Subject {
     private User user;
 
     @Column(name = "is_active")
-    private boolean isActive;
+    private Boolean isActive;
 
     @Column(name = "created_at")
     @CreationTimestamp
@@ -49,16 +49,19 @@ public class Subject {
     private List<Activity> activities;
 
     public Subject() {
+        setIsActive(true);
     }
 
     public Subject(String name, String description) {
         this.name = name;
         this.description = description;
+        setIsActive(true);
     }
     public Subject(SubjectDTO subjectDTO) {
         this.id = subjectDTO.id();
         this.name = subjectDTO.name();
         this.description = subjectDTO.description();
+        this.isActive = subjectDTO.isActive();
     }
     public int getId() {
         return id;
@@ -92,11 +95,11 @@ public class Subject {
         this.user = user;
     }
 
-    public boolean isActive() {
+    public Boolean getIsActive() {
         return isActive;
     }
 
-    public void setActive(boolean active) {
+    public void setIsActive(Boolean active) {
         isActive = active;
     }
 

@@ -5,6 +5,7 @@ import com.academo.repository.UserRepository;
 import com.academo.security.authuser.*;
 import com.academo.security.service.TokenService;
 import com.academo.service.profile.ProfileServiceImpl;
+import com.academo.util.exceptions.user.ExistingUserException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -41,9 +42,9 @@ public class UserController {
     }
 
     @PostMapping("/register")
-    public ResponseEntity<?> register(@RequestBody RegisterDTO register) {
+    public ResponseEntity<?> register(@RequestBody RegisterDTO register) throws ExistingUserException {
         if(userRepository.findByName(register.name()) != null ||
-                userRepository.findByEmail(register.email()) != null) return ResponseEntity.badRequest().build();
+                userRepository.findByEmail(register.email()) != null) throw new ExistingUserException();
 
         String encryptedPassword = new BCryptPasswordEncoder().encode(register.password());
         User user = new  User(register.name(), encryptedPassword,register.email());

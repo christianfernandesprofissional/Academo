@@ -7,6 +7,7 @@ import com.academo.util.exceptions.activityType.ActivityTypeNotFoundException;
 import com.academo.util.exceptions.group.GroupNotFoundException;
 import com.academo.util.exceptions.profile.ProfileNotFoundException;
 import com.academo.util.exceptions.subject.SubjectNotFoundException;
+import com.academo.util.exceptions.user.ExistingUserException;
 import com.academo.util.exceptions.user.UserNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -61,6 +62,11 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
     @ExceptionHandler(UserNotFoundException.class)
     private ResponseEntity<String> userNotFoundHandler(UserNotFoundException exception) {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Usuário não encontrado!");
+    }
+
+    @ExceptionHandler(ExistingUserException.class)
+    private ResponseEntity<String> existingUserHandler(ExistingUserException exception) {
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Este usuário já está cadastrado no sistema!");
     }
 
     //Inserção ou deleção de objetos que não pertecem ao usuário

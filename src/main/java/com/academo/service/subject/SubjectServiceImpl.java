@@ -1,13 +1,16 @@
 package com.academo.service.subject;
 
 import com.academo.model.Activity;
+import com.academo.model.Group;
 import com.academo.model.Subject;
 import com.academo.model.User;
+import com.academo.repository.GroupRepository;
 import com.academo.repository.SubjectRepository;
 import com.academo.repository.UserRepository;
 import com.academo.service.user.UserServiceImpl;
 import com.academo.util.exceptions.NotAllowedInsertionException;
 import com.academo.util.exceptions.activity.ActivityNotFoundException;
+import com.academo.util.exceptions.group.GroupNotFoundException;
 import com.academo.util.exceptions.subject.SubjectNotFoundException;
 import com.academo.util.exceptions.user.UserNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,6 +28,9 @@ public class SubjectServiceImpl implements ISubjectService {
     private UserRepository userRepository;
 
     @Autowired
+    private GroupRepository groupRepository;
+
+    @Autowired
     private UserServiceImpl userService;
 
     @Override
@@ -38,10 +44,16 @@ public class SubjectServiceImpl implements ISubjectService {
     }
 
     @Override
+    public List<Subject> findByGroup(Integer groupId) {
+        Group group = groupRepository.findById(groupId).orElseThrow(GroupNotFoundException::new);
+        return group.getSubjects();
+    }
+
+    @Override
     public Subject create(Subject subject, Integer userId) {
         User user = userRepository.findById(userId).orElseThrow(UserNotFoundException::new);
         subject.setUser(user);
-         return subjectRepository.save(subject);
+        return subjectRepository.save(subject);
     }
 
     @Override

@@ -87,7 +87,7 @@ public class GroupServiceImpl implements IGroupService {
     @Override
     public Group associateSubjects(Integer userId, Integer groupId, List<Integer> subjectsIds) {
         Group group = groupRepository.findById(groupId).orElseThrow(GroupNotFoundException::new);
-        List<Subject> subjects = new ArrayList<>();
+        List<Subject> subjects = group.getSubjects();
         for(Integer id : subjectsIds) {
             Subject subject = subjectService.findById(id);
             if(subject != null) {
