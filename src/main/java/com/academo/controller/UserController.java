@@ -5,6 +5,7 @@ import com.academo.repository.UserRepository;
 import com.academo.security.authuser.*;
 import com.academo.security.service.TokenService;
 import com.academo.service.profile.ProfileServiceImpl;
+import com.academo.util.exceptions.user.ExistingUserException;
 import com.academo.util.exceptions.user.UserNotFoundException;
 import com.academo.util.mailservice.JavaMailApp;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -51,9 +52,10 @@ public class UserController {
     }
 
     @PostMapping("/register")
-    public ResponseEntity<User> register(@RequestBody RegisterDTO register) {
+    public ResponseEntity<?> register(@RequestBody RegisterDTO register) throws ExistingUserException {
         if(userRepository.findByName(register.name()) != null ||
-                userRepository.findByEmail(register.email()) != null) return ResponseEntity.badRequest().build();
+                userRepository.findByEmail(register.email()) != null) throw new ExistingUserException();
+
         String encryptedPassword = new BCryptPasswordEncoder().encode(register.password());
         User user = new  User(register.name(), encryptedPassword,register.email());
         LocalDateTime expiresAt = LocalDateTime.now().plusMinutes(30).plusSeconds(20).atOffset(ZoneOffset.of("-03:00")).toLocalDateTime();
