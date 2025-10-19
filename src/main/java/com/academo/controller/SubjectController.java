@@ -44,7 +44,9 @@ public class SubjectController {
                         s.getId(),
                         s.getName(),
                         s.getDescription(),
-                        s.getIsActive())).toList();
+                        s.getIsActive(),
+                        s.getCreatedAt(),
+                        s.getUpdatedAt())).toList();
 
         return ResponseEntity.ok(subjects);
     }
@@ -58,7 +60,9 @@ public class SubjectController {
                         g.getId(),
                         g.getName(),
                         g.getDescription(),
-                        g.getIsActive())).toList();
+                        g.getIsActive(),
+                        g.getCreatedAt(),
+                        g.getUpdatedAt())).toList();
         return ResponseEntity.ok(subjects);
     }
 
@@ -66,7 +70,7 @@ public class SubjectController {
     public ResponseEntity<SubjectDTO> getSubject(Authentication authentication, @RequestParam Integer subjectId) {
         Integer userId = ((AuthUser) authentication.getPrincipal()).getUser().getId();
         Subject subject = service.getSubjectByIdAndUserId(userId, subjectId);
-        SubjectDTO subjectDTO = new SubjectDTO(subject.getId(), subject.getName(), subject.getDescription(), subject.getIsActive());
+        SubjectDTO subjectDTO = new SubjectDTO(subject.getId(), subject.getName(), subject.getDescription(), subject.getIsActive(), subject.getCreatedAt(), subject.getUpdatedAt());
         return ResponseEntity.ok(subjectDTO);
     }
 

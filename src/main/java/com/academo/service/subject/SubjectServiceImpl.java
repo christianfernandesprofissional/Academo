@@ -13,6 +13,7 @@ import com.academo.util.exceptions.activity.ActivityNotFoundException;
 import com.academo.util.exceptions.group.GroupNotFoundException;
 import com.academo.util.exceptions.subject.SubjectNotFoundException;
 import com.academo.util.exceptions.user.UserNotFoundException;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -71,9 +72,15 @@ public class SubjectServiceImpl implements ISubjectService {
     }
 
     @Override
+    @Transactional
     public void deleteSubject(Integer userId, Integer subjectId){
         Subject inDb = subjectRepository.findById(subjectId).orElseThrow(SubjectNotFoundException::new);
         if(!inDb.getUser().getId().equals(userId)) throw new NotAllowedInsertionException("Deleção inválida!");
+
+        for(Group g : inDb.getGroups()) {
+            g.getSubjects().remove(inDb);
+            groupRepository.save(g);
+        }
         subjectRepository.deleteById(subjectId);
     }
 

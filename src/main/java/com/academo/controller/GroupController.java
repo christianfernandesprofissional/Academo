@@ -36,7 +36,7 @@ public class GroupController {
                         g.getIsActive(),
                         //A lista de Subject do grupo é transformada em uma lista de SubjectDTO
                         g.getSubjects().stream()
-                                .map(s -> new SubjectDTO(s.getId(), s.getName(), s.getDescription(), s.getIsActive())).toList()
+                                .map(s -> new SubjectDTO(s.getId(), s.getName(), s.getDescription(), s.getIsActive(), s.getCreatedAt(), s.getUpdatedAt())).toList()
                 )).toList();
 
         return ResponseEntity.ok(groups);
@@ -53,7 +53,9 @@ public class GroupController {
                         s.getId(),
                         s.getName(),
                         s.getDescription(),
-                        s.getIsActive()
+                        s.getIsActive(),
+                        s.getCreatedAt(),
+                        s.getUpdatedAt()
                 )).toList();
         GroupDTO groupDTO = new GroupDTO(group.getId(), group.getName(), group.getDescription(),group.getIsActive(), subjects);
         return ResponseEntity.ok(groupDTO);
@@ -69,7 +71,9 @@ public class GroupController {
                         s.getId(),
                         s.getName(),
                         s.getDescription(),
-                        s.getIsActive()
+                        s.getIsActive(),
+                        s.getCreatedAt(),
+                        s.getUpdatedAt()
                 )).toList();
         GroupDTO groupDTO = new GroupDTO(group.getId(), group.getName(), group.getDescription(), group.getIsActive(), subjects);
         return ResponseEntity.ok(groupDTO);
@@ -110,7 +114,9 @@ public class GroupController {
                         s.getId(),
                         s.getName(),
                         s.getDescription(),
-                        s.getIsActive()
+                        s.getIsActive(),
+                        s.getCreatedAt(),
+                        s.getUpdatedAt()
                 )).toList();
         GroupDTO groupDTO = new GroupDTO(group.getId(), group.getName(), group.getDescription(), group.getIsActive(), subjects);
         return ResponseEntity.ok(groupDTO);
@@ -125,7 +131,9 @@ public class GroupController {
                         s.getId(),
                         s.getName(),
                         s.getDescription(),
-                        s.getIsActive()
+                        s.getIsActive(),
+                        s.getCreatedAt(),
+                        s.getUpdatedAt()
                 )).toList();
         GroupDTO groupDTO = new GroupDTO(group.getId(), group.getName(), group.getDescription(), group.getIsActive(), subjects);
         return ResponseEntity.ok(groupDTO);

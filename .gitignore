@@ -32,5 +32,7 @@ build/
 ### VS Code ###
 .vscode/
 
+academostorage-6d230d1bc095.json
+
 ### Arquivos .env de configuração ###
 *.env
