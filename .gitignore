@@ -34,3 +34,4 @@ build/
 
 ### Arquivos .env de configuração ###
 *.env
+/academostorage-6d230d1bc095.json
