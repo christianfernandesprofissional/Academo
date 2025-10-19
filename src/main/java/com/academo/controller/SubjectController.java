@@ -1,8 +1,10 @@
 package com.academo.controller;
 
+import com.academo.controller.dtos.subject.AssociatedGroupsDTO;
 import com.academo.controller.dtos.subject.SubjectDTO;
 import com.academo.controller.dtos.subject.SubjectPostDTO;
 import com.academo.model.Activity;
+import com.academo.model.Group;
 import com.academo.model.Subject;
 import com.academo.security.authuser.AuthUser;
 import com.academo.service.subject.ISubjectService;
@@ -52,13 +54,23 @@ public class SubjectController {
     @GetMapping("/all")
     public ResponseEntity<List<SubjectDTO>> getSubjects(Authentication authentication) {
         Integer userId = ((AuthUser) authentication.getPrincipal()).getUser().getId();
+//        List<Subject> subjects = service.findAll(userId);
+//        for(Subject s : subjects) {
+//            System.out.println("Subject name: " + s.getName());
+//            List<Group> groups = s.getGroups();
+//            for(Group g : groups) {
+//                System.out.println("Group name: " + g.getName());
+//            }
+//        }
+
         List<SubjectDTO> subjects = service.findAll(userId)
                 .stream()
-                .map(g -> new SubjectDTO(
-                        g.getId(),
-                        g.getName(),
-                        g.getDescription(),
-                        g.getIsActive())).toList();
+                .map(s -> new SubjectDTO(
+                        s.getId(),
+                        s.getName(),
+                        s.getDescription(),
+                        s.getIsActive())).toList();
+                        //s.getGroups().stream().map(Group::getName).toList())).toList();
         return ResponseEntity.ok(subjects);
     }
 

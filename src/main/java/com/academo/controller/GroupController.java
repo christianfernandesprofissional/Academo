@@ -3,6 +3,7 @@ package com.academo.controller;
 import com.academo.controller.dtos.group.AssociateSubjectsDTO;
 import com.academo.controller.dtos.group.GroupDTO;
 import com.academo.controller.dtos.group.GroupPostDTO;
+import com.academo.controller.dtos.group.RemoveSubjectDTO;
 import com.academo.controller.dtos.subject.SubjectDTO;
 import com.academo.model.Group;
 import com.academo.security.authuser.AuthUser;
@@ -75,6 +76,21 @@ public class GroupController {
         return ResponseEntity.ok(groupDTO);
     }
 
+    @PutMapping("remove-subject")
+    public ResponseEntity<GroupDTO> removeSubject(Authentication authentication, @RequestBody RemoveSubjectDTO dto) {
+        Integer userId = ((AuthUser) authentication.getPrincipal()).getUser().getId();
+        Group group = groupService.deleteSubjectFromGroup(userId, dto.groupId(), dto.subjectId());
+        List<SubjectDTO> subjects = group.getSubjects().stream()
+                .map(s -> new SubjectDTO(
+                        s.getId(),
+                        s.getName(),
+                        s.getDescription(),
+                        s.getIsActive()
+                )).toList();
+        GroupDTO groupDTO = new GroupDTO(group.getId(), group.getName(), group.getDescription(), group.getIsActive(), subjects);
+        return ResponseEntity.ok(groupDTO);
+    }
+
     // Função para criar novo grupo
     @PostMapping
     public ResponseEntity<Group> createGroup(Authentication authentication, @RequestBody GroupPostDTO groupDTO){
@@ -105,21 +121,6 @@ public class GroupController {
     public ResponseEntity<GroupDTO> addSubjectToGroup(Authentication authentication, @RequestParam Integer groupId, @RequestParam Integer subjectId) {
         Integer userId = ((AuthUser) authentication.getPrincipal()).getUser().getId();
         Group group = groupService.addSubjectToGroup(userId, groupId, subjectId);
-        List<SubjectDTO> subjects = group.getSubjects().stream()
-                .map(s -> new SubjectDTO(
-                        s.getId(),
-                        s.getName(),
-                        s.getDescription(),
-                        s.getIsActive()
-                )).toList();
-        GroupDTO groupDTO = new GroupDTO(group.getId(), group.getName(), group.getDescription(), group.getIsActive(), subjects);
-        return ResponseEntity.ok(groupDTO);
-    }
-
-    @DeleteMapping("/removeSubject")
-    public ResponseEntity<GroupDTO> removeSubjectFromGroup(Authentication authentication, @RequestParam Integer groupId, @RequestParam Integer subjectId){
-        Integer userId = ((AuthUser) authentication.getPrincipal()).getUser().getId();
-        Group group = groupService.deleteSubjectFromGroup(userId, groupId, subjectId);
         List<SubjectDTO> subjects = group.getSubjects().stream()
                 .map(s -> new SubjectDTO(
                         s.getId(),
