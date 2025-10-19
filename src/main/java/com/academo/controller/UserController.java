@@ -6,14 +6,21 @@ import com.academo.security.authuser.*;
 import com.academo.security.service.TokenService;
 import com.academo.service.profile.ProfileServiceImpl;
 import com.academo.util.exceptions.user.ExistingUserException;
+import com.academo.util.exceptions.user.UserNotFoundException;
+import com.academo.util.mailservice.JavaMailApp;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cglib.core.Local;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+
+import java.time.LocalDateTime;
+import java.time.ZoneOffset;
 
 @RestController
 @RequestMapping("/auth")
@@ -31,12 +38,15 @@ public class UserController {
     @Autowired
     private TokenService tokenService;
 
+    @Autowired
+    private JavaMailApp mail;
+
     @PostMapping("/login")
     public ResponseEntity<LoginResponseDTO> login(@RequestBody UserAuthDTO user) {
         UsernamePasswordAuthenticationToken userPass = new UsernamePasswordAuthenticationToken(user.username(), user.password());
         Authentication auth = authenticationManager.authenticate(userPass);
 
-        var token = tokenService.generateToken((AuthUser) auth.getPrincipal());
+        var token = tokenService.generateLoginToken((AuthUser) auth.getPrincipal());
 
         return ResponseEntity.ok(new LoginResponseDTO(token));
     }
@@ -48,9 +58,31 @@ public class UserController {
 
         String encryptedPassword = new BCryptPasswordEncoder().encode(register.password());
         User user = new  User(register.name(), encryptedPassword,register.email());
+        LocalDateTime expiresAt = LocalDateTime.now().plusMinutes(30).plusSeconds(20).atOffset(ZoneOffset.of("-03:00")).toLocalDateTime();
+        user.setTokenExpiresAt(expiresAt);
         User createdUser = userRepository.save(user);
         profileService.create(createdUser);
+        enviarEmailDeAtivacao(createdUser.getEmail(), createdUser.getId());
         return ResponseEntity.ok().build();
+    }
+
+    @PostMapping("/activate")
+    public ResponseEntity<User> activate(@RequestParam("value") String token) {
+        Integer userId = Integer.parseInt(tokenService.validateActivationToken(token));
+        User user = userRepository.findById(userId).orElseThrow(UserNotFoundException::new);
+        if(!user.getIsActive()) {
+            user.setTokenExpiresAt(LocalDateTime.now());
+            user.setIsActive(true);
+            userRepository.save(user);
+            mail.enviarEmailBoasVindas(user.getEmail());
+            return ResponseEntity.ok().build();
+        }
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+    }
+
+    private void enviarEmailDeAtivacao(String email, Integer userId) {
+        var token = tokenService.generateActivationToken(userId);
+        mail.enviarEmailDeAtivacao(email, token);
     }
 
 }
