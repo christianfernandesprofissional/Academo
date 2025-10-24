@@ -30,11 +30,11 @@ public class Subject {
     @Column(name = "is_active")
     private Boolean isActive;
 
-    @Column(name = "created_at")
+    @Column(name = "created_at", updatable = false)
     @CreationTimestamp
     private LocalDateTime createdAt;
 
-    @Column(name = "updated_at", updatable = false)
+    @Column(name = "updated_at")
     @UpdateTimestamp
     private LocalDateTime updatedAt;
 

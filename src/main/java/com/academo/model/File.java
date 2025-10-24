@@ -1,38 +1,77 @@
 package com.academo.model;
 
-import java.io.Serializable;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
+import org.hibernate.annotations.UuidGenerator;
 
+import java.io.Serializable;
+import java.time.LocalDateTime;
+
+@Entity
+@Table(name = "tb_files")
 public class File implements Serializable {
 
-    private String filename;
-    private String fileDownloadUri;
-    private String fileType;
+    @Id
+    @UuidGenerator
+    @Column(name = "uuid", length = 255, nullable = false)
+    private String uuid;
+
+    @Column(name = "file_name", length = 255 ,nullable = false)
+    private String fileName;  // Nome do arquivo uploadeado
+
+    @Column(name = "path", columnDefinition = "TEXT", nullable = false)
+    private String path;  // Caminho do arquivo depois de salvo
+
+    @Column(name = "file_type", length = 255, nullable = false)
+    private String fileType; // Tipo de arquivo
+
+    @Column(name = "size")
     private Long size;
+
+    @Column(name = "created_at")
+    @CreationTimestamp
+    private LocalDateTime createdAt;
+
+    @Column(name = "updated_at")
+    @UpdateTimestamp
+    private LocalDateTime updatedAt;
 
     public File() {
     }
 
-    public File(String filename, String fileDownloadUri, String fileType, Long size) {
-        this.filename = filename;
-        this.fileDownloadUri = fileDownloadUri;
+    public File(String fileName, String path, String fileType, Long size) {
+        this.fileName = fileName;
+        this.path = path;
         this.fileType = fileType;
         this.size = size;
     }
 
-    public String getFilename() {
-        return filename;
+    public String getUuid() {
+        return uuid;
     }
 
-    public void setFilename(String filename) {
-        this.filename = filename;
+    public void setUuid(String uuid) {
+        this.uuid = uuid;
     }
 
-    public String getFileDownloadUri() {
-        return fileDownloadUri;
+    public String getFileName() {
+        return fileName;
     }
 
-    public void setFileDownloadUri(String fileDownloadUri) {
-        this.fileDownloadUri = fileDownloadUri;
+    public void setFileName(String fileName) {
+        this.fileName = fileName;
+    }
+
+    public String getPath() {
+        return path;
+    }
+
+    public void setPath(String path) {
+        this.path = path;
     }
 
     public String getFileType() {
@@ -49,5 +88,21 @@ public class File implements Serializable {
 
     public void setSize(Long size) {
         this.size = size;
+    }
+
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(LocalDateTime createdAt) {
+        this.createdAt = createdAt;
+    }
+
+    public LocalDateTime getUpdatedAt() {
+        return updatedAt;
+    }
+
+    public void setUpdatedAt(LocalDateTime updatedAt) {
+        this.updatedAt = updatedAt;
     }
 }

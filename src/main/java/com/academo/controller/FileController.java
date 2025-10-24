@@ -21,7 +21,11 @@ public class FileController {
 
     @PostMapping("/upload-file")
     private ResponseEntity<File> uploadFile(@RequestParam MultipartFile file, Authentication authentication){
+
+        System.out.println("File original name:" + file.getOriginalFilename());
         String filename = fileStorageService.storeFile(file);
+        filename = file.getOriginalFilename();
+
 
         String fileDownloadUri = ServletUriComponentsBuilder.fromCurrentContextPath()
                 .path("/files/download-file")
