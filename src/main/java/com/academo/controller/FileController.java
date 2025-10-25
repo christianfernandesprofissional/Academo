@@ -2,10 +2,8 @@ package com.academo.controller;
 
 import com.academo.model.File;
 import com.academo.util.FileTransfer.service.DriveService;
-import com.academo.util.FileTransfer.service.FileStorageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ByteArrayResource;
-import org.springframework.core.io.InputStreamResource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -13,14 +11,11 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 @RestController
 @RequestMapping("/files")
 public class FileController {
 
-//    @Autowired
-//    private FileStorageService fileStorageService;
 
     @Autowired
     private DriveService driveService;
