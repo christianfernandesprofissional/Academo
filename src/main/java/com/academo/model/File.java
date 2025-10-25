@@ -21,7 +21,7 @@ public class File implements Serializable {
     private String uuid;
 
     @Column(name = "file_name", length = 255 ,nullable = false)
-    private String fileName;  // Nome do arquivo uploadeado
+    private String fileName;  // Nome original do arquivo
 
     @Column(name = "path", columnDefinition = "TEXT", nullable = false)
     private String path;  // Caminho do arquivo depois de salvo
@@ -31,6 +31,10 @@ public class File implements Serializable {
 
     @Column(name = "size")
     private Long size;
+
+    private User user;
+
+    private Subject subject;
 
     @Column(name = "created_at")
     @CreationTimestamp

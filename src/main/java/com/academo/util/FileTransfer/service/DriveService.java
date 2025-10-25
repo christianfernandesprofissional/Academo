@@ -11,7 +11,6 @@ import com.google.api.client.json.gson.GsonFactory;
 import com.google.api.client.util.store.FileDataStoreFactory;
 import com.google.api.services.drive.Drive;
 import com.google.api.services.drive.DriveScopes;
-import com.google.api.services.drive.model.File;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -72,7 +71,7 @@ public class DriveService {
 
     public DownloadedFile getFile(String fileId) throws Exception {
         // Recupera o metadado do arquivo
-        File fileMetadata = drive.files()
+        com.google.api.services.drive.model.File fileMetadata = drive.files()
                 .get(fileId)
                 .setFields("name, mimeType")
                 .execute();
