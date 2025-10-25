@@ -1,45 +1,99 @@
 package com.academo.util.FileTransfer.service;
 
-import com.google.api.client.http.FileContent;
+import com.google.api.client.auth.oauth2.Credential;
+import com.google.api.client.extensions.java6.auth.oauth2.AuthorizationCodeInstalledApp;
+import com.google.api.client.extensions.jetty.auth.oauth2.LocalServerReceiver;
+import com.google.api.client.googleapis.auth.oauth2.GoogleAuthorizationCodeFlow;
+import com.google.api.client.googleapis.auth.oauth2.GoogleClientSecrets;
+import com.google.api.client.googleapis.javanet.GoogleNetHttpTransport;
 import com.google.api.client.http.InputStreamContent;
+import com.google.api.client.json.gson.GsonFactory;
+import com.google.api.client.util.store.FileDataStoreFactory;
 import com.google.api.services.drive.Drive;
+import com.google.api.services.drive.DriveScopes;
 import com.google.api.services.drive.model.File;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.FileOutputStream;
-import java.io.IOException;
+import java.io.*;
+import java.nio.file.Paths;
+import java.util.Collections;
 import java.util.List;
 
+@Service
 public class DriveService {
 
-    @Autowired
-    private Drive drive;
 
-    public String createFolder(String name, String parentId) throws IOException {
-        File metadata = new File();
-        metadata.setName(name);
-        metadata.setMimeType("application/vnd.google-apps.folder");
-        if (parentId != null) metadata.setParents(List.of(parentId));
+    private final Drive drive;
 
-        File folder = drive.files().create(metadata).setFields("id").execute();
-        return folder.getId();
+    public DriveService() throws Exception {
+        // Caminho para o JSON que você baixou do Console do Google
+        FileInputStream in = new FileInputStream("src/main/resources/client_secret_685572874715-63fravm0v1rqfllot0bpq1oacvioi3j3.apps.googleusercontent.com.json");
+        GoogleClientSecrets clientSecrets = GoogleClientSecrets.load(
+                GsonFactory.getDefaultInstance(), new InputStreamReader(in));
+
+        List<String> scopes = Collections.singletonList(DriveScopes.DRIVE_FILE);
+
+        GoogleAuthorizationCodeFlow flow = new GoogleAuthorizationCodeFlow.Builder(
+                GoogleNetHttpTransport.newTrustedTransport(),
+                GsonFactory.getDefaultInstance(),
+                clientSecrets,
+                scopes)
+                .setDataStoreFactory(new FileDataStoreFactory(Paths.get("tokens").toFile()))
+                .setAccessType("offline")
+                .build();
+
+        // Autoriza o usuário (abre navegador para login)
+        Credential credential = new AuthorizationCodeInstalledApp(
+                flow, new LocalServerReceiver()).authorize("user");
+
+        drive = new Drive.Builder(
+                GoogleNetHttpTransport.newTrustedTransport(),
+                GsonFactory.getDefaultInstance(),
+                credential)  // aqui usamos Credential diretamente
+                .setApplicationName("Spring Drive Upload")
+                .build();
     }
 
-    public String uploadFile(MultipartFile multipartFile, String parentFolderId, String driveFileName) throws IOException {
-        File metadata = new File();
-        metadata.setName(driveFileName);
-        metadata.setParents(List.of(parentFolderId));
+    public String uploadFile(MultipartFile multipartFile) throws Exception {
+        com.google.api.services.drive.model.File fileMetadata = new com.google.api.services.drive.model.File();
+        fileMetadata.setName(multipartFile.getOriginalFilename());
 
-        InputStreamContent content = new InputStreamContent(
-                multipartFile.getContentType(),
-                multipartFile.getInputStream()
-        );
+        com.google.api.services.drive.model.File uploadedFile = drive.files().create(
+                fileMetadata,
+                new InputStreamContent(
+                        multipartFile.getContentType(),
+                        multipartFile.getInputStream()
+                )
+        ).setFields("id").execute();
 
-        File uploadedFile = drive.files()
-                .create(metadata, content)
-                .setFields("id, webViewLink, webContentLink")
+        return uploadedFile.getId();
+    }
+
+    public DownloadedFile getFile(String fileId) throws Exception {
+        // Recupera o metadado do arquivo
+        File fileMetadata = drive.files()
+                .get(fileId)
+                .setFields("name, mimeType")
                 .execute();
-        return uploadedFile.getWebViewLink();
+
+        // Cria o fluxo de saída para armazenar os bytes
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+
+        // Faz o download do conteúdo
+        drive.files().get(fileId).executeMediaAndDownloadTo(outputStream);
+
+        // Retorna um objeto com as informações do arquivo
+        return new DownloadedFile(
+                fileMetadata.getName(),
+                fileMetadata.getMimeType(),
+                outputStream.toByteArray()
+        );
     }
+
+    public void deleteFile(String fileId) throws Exception {
+        drive.files().delete(fileId).execute();
+    }
+
+    public record DownloadedFile(String name, String mimeType, byte[] content) {}
 }
