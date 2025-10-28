@@ -48,6 +48,12 @@ public class Subject {
     @JsonIgnore 
     private List<Activity> activities;
 
+    @OneToMany(mappedBy = "subject",
+             cascade = CascadeType.ALL,
+             orphanRemoval = true)
+    @JsonIgnore
+    private List<File> files;
+
     public Subject() {
         setIsActive(true);
     }
