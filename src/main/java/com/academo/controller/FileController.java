@@ -1,6 +1,9 @@
 package com.academo.controller;
 
 import com.academo.model.File;
+import com.academo.model.User;
+import com.academo.security.authuser.AuthUser;
+import com.academo.service.file.IFileService;
 import com.academo.util.FileTransfer.service.DriveService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ByteArrayResource;
@@ -16,26 +19,17 @@ import org.springframework.web.multipart.MultipartFile;
 @RequestMapping("/files")
 public class FileController {
 
-
     @Autowired
-    private DriveService driveService;
+    private IFileService fileService;
 
 
     @PostMapping("/upload-file")
-    private ResponseEntity<File> uploadFile(@RequestParam("file") MultipartFile file, Authentication authentication){
+    public ResponseEntity<File> uploadFile(@RequestParam("file") MultipartFile file, Authentication authentication){
+        Integer userId = ((AuthUser) authentication.getPrincipal()).getUser().getId();
 
-        String driveFileId = null;
-        try {
-            driveFileId = driveService.uploadFile(file);
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
+        File uploadedFile = fileService.createFile(file, userId);
 
-        // Salvar metadados no banco
-        File f = new File(file.getOriginalFilename(), driveFileId, file.getContentType(), file.getSize());
-        //fileRepository.save(f);
-
-        return ResponseEntity.ok(f);
+        return ResponseEntity.ok(uploadedFile);
     }
 
     @GetMapping("/download/{fileId}")
@@ -67,5 +61,9 @@ public class FileController {
                     .body("Erro ao deletar o arquivo: " + e.getMessage());
         }
     }
+
+
+
+
 
 }

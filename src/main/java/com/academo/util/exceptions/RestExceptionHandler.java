@@ -4,6 +4,10 @@ import com.academo.model.User;
 import com.academo.security.service.TokenService;
 import com.academo.service.user.IUserService;
 import com.academo.service.user.UserServiceImpl;
+import com.academo.util.exceptions.FileTransfer.FileSizeException;
+import com.academo.util.exceptions.FileTransfer.FileStorageException;
+import com.academo.util.exceptions.FileTransfer.MimeTypeException;
+import com.academo.util.exceptions.FileTransfer.UserStorageIsFullException;
 import com.academo.util.exceptions.activity.ActivityExistsException;
 import com.academo.util.exceptions.activity.ActivityNotFoundException;
 import com.academo.util.exceptions.activityType.ActivityTypeExistsException;
@@ -106,4 +110,21 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
         }
         return ResponseEntity.status(HttpStatus.FORBIDDEN).body("O usuário ainda não foi ativado. Confira seu email para ativar");
     }
+
+    @ExceptionHandler(FileSizeException.class)
+    private ResponseEntity<String> fileSizeHandler(FileSizeException exception) {
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(exception.getMessage());
+    }
+
+    @ExceptionHandler(MimeTypeException.class)
+    private ResponseEntity<String> mimeTypeHandler(MimeTypeException exception) {
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(exception.getMessage());
+    }
+
+    @ExceptionHandler(UserStorageIsFullException.class)
+    private ResponseEntity<String> userStorageIsFullHandler(UserStorageIsFullException exception) {
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(exception.getMessage());
+    }
+
+
 }
