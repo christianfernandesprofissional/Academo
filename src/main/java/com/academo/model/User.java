@@ -38,6 +38,9 @@ public class User {
     @Column(name = "token_expires_at")
     private LocalDateTime tokenExpiresAt;
 
+    @Column(name = "storage_usage")
+    private Long storageUsage;
+
     public User() {}
 
     public User(String name, String password, String email) {
@@ -103,6 +106,14 @@ public class User {
 
     public void setTokenExpiresAt(LocalDateTime tokenExpiresAt) {
         this.tokenExpiresAt = tokenExpiresAt;
+    }
+
+    public Long getStorageUsage() {
+        return this.storageUsage;
+    }
+
+    public void setStorageUsage(Long storageUsage) {
+        this.storageUsage = storageUsage;
     }
 
     @Override

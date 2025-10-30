@@ -1,0 +1,15 @@
+package com.academo.service.file;
+
+import com.academo.model.File;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.util.List;
+
+public interface IFileService {
+
+    public File createFile(MultipartFile file, Integer userId);
+    public File findFileById(String uuid);
+    public List<File> findAllFilesBySubjectId(Integer subjectId);
+    public void deleteFile(String uuid, String path);
+}
