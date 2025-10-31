@@ -8,7 +8,7 @@ import java.util.List;
 
 public interface IFileService {
 
-    public File createFile(MultipartFile file, Integer userId);
+    public File createFile(MultipartFile file, Integer userId, Integer subjectId);
     public File findFileById(String uuid);
     public List<File> findAllFilesBySubjectId(Integer subjectId);
     public void deleteFile(String uuid, String path);

@@ -24,10 +24,10 @@ public class FileController {
 
 
     @PostMapping("/upload-file")
-    public ResponseEntity<File> uploadFile(@RequestParam("file") MultipartFile file, Authentication authentication){
+    public ResponseEntity<File> uploadFile(@RequestParam("file") MultipartFile file, @RequestParam("subjectId") Integer subjectId, Authentication authentication){
         Integer userId = ((AuthUser) authentication.getPrincipal()).getUser().getId();
 
-        File uploadedFile = fileService.createFile(file, userId);
+        File uploadedFile = fileService.createFile(file, userId, subjectId);
 
         return ResponseEntity.ok(uploadedFile);
     }

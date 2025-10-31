@@ -1,15 +1,14 @@
 package com.academo.service.file;
 
 import com.academo.model.File;
+import com.academo.model.Subject;
 import com.academo.model.User;
 import com.academo.repository.FileRepository;
 import com.academo.repository.UserRepository;
+import com.academo.service.subject.SubjectServiceImpl;
 import com.academo.service.user.IUserService;
 import com.academo.util.FileTransfer.service.DriveService;
-import com.academo.util.exceptions.FileTransfer.FileNotFoundException;
-import com.academo.util.exceptions.FileTransfer.FileSizeException;
-import com.academo.util.exceptions.FileTransfer.FileStorageException;
-import com.academo.util.exceptions.FileTransfer.UserStorageIsFullException;
+import com.academo.util.exceptions.FileTransfer.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -20,16 +19,26 @@ import java.util.List;
 public class FileServiceImpl implements IFileService {
 
     @Autowired
-    FileRepository fileRepository;
+    private FileRepository fileRepository;
 
     @Autowired
-    IUserService userService;
+    private IUserService userService;
+
+    @Autowired
+    private SubjectServiceImpl subjectService;
 
     @Autowired
     private DriveService driveService;
 
     @Override
-    public File createFile(MultipartFile file, Integer userId) {
+    public File createFile(MultipartFile file, Integer userId, Integer subjectId) {
+
+        isMimeTypeValid(file);
+        isFileSizeValid(file);
+
+        User user = userService.findById(userId);
+        isUserStorageFull(file, user);
+        Subject subject = subjectService.findById(subjectId);
 
         String driveFileId = null;
         try {
@@ -38,7 +47,10 @@ public class FileServiceImpl implements IFileService {
             throw new FileStorageException();
         }
 
-        File f = new File(file.getOriginalFilename(), driveFileId, file.getContentType(), file.getSize());
+        String completePath = "http://localhost:8080/download/" + driveFileId;
+        File f = new File(file.getOriginalFilename(), completePath, file.getContentType(), file.getSize());
+        f.setUser(user);
+        f.setSubject(subject);
 
         File createdFile = fileRepository.save(f);
 
@@ -77,7 +89,7 @@ public class FileServiceImpl implements IFileService {
                 !file.getContentType().equalsIgnoreCase("application/msword") ||
                 !file.getContentType().equalsIgnoreCase("application/vnd.openxmlformats-officedocument.wordprocessingml.document") ||
                 !file.getContentType().equalsIgnoreCase("text/csv") || !file.getContentType().equalsIgnoreCase("text/plain")) {
-            return false;
+            throw new MimeTypeException();
         }
         return true;
     }
@@ -88,8 +100,7 @@ public class FileServiceImpl implements IFileService {
         return true;
     }
 
-    private Boolean isUserStorageFull(MultipartFile file, Integer userId) {
-        User user = userService.findById(userId);
+    private Boolean isUserStorageFull(MultipartFile file, User user) {
         if(user.getStorageUsage() + file.getSize() > 300000000L) {
             throw new UserStorageIsFullException();
         }

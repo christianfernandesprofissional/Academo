@@ -66,6 +66,8 @@ public class DriveService {
                 )
         ).setFields("id").execute();
 
+        // Este ID retornado é o ID do arquivo dentro do Google Drive
+        // Aqui no Academo será armazenado no atributo "path"
         return uploadedFile.getId();
     }
 
