@@ -1,5 +1,6 @@
 package com.academo.controller;
 
+import com.academo.controller.dtos.file.FileDTO;
 import com.academo.model.File;
 import com.academo.model.User;
 import com.academo.security.authuser.AuthUser;
@@ -26,13 +27,22 @@ public class FileController {
 
 
     @PostMapping("/upload-file")
-    public ResponseEntity<File> uploadFile(@RequestParam("file") MultipartFile file, @RequestParam("subjectId") Integer subjectId, Authentication authentication){
+    public ResponseEntity<FileDTO> uploadFile(@RequestParam("file") MultipartFile file, @RequestParam("subjectId") Integer subjectId, Authentication authentication){
         Integer userId = ((AuthUser) authentication.getPrincipal()).getUser().getId();
 
         File uploadedFile = fileService.createFile(file, userId, subjectId);
         URI uri = URI.create(uploadedFile.getPath());
+        FileDTO fileDto = new FileDTO(
+                uploadedFile.getUuid(),
+                uploadedFile.getFileName(),
+                uploadedFile.getPath(),
+                uploadedFile.getFileType(),
+                uploadedFile.getSize(),
+                uploadedFile.getSubject().getId(),
+                uploadedFile.getCreatedAt()
+        );
 
-        return ResponseEntity.created(uri).body(uploadedFile);
+        return ResponseEntity.created(uri).body(fileDto);
     }
 
 //    @GetMapping("/download/{fileId}")

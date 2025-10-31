@@ -114,17 +114,17 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
     //Files
     @ExceptionHandler(FileSizeException.class)
     private ResponseEntity<String> fileSizeHandler(FileSizeException exception) {
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(exception.getMessage());
+        return ResponseEntity.status(HttpStatus.PAYLOAD_TOO_LARGE).body(exception.getMessage());
     }
 
     @ExceptionHandler(MimeTypeException.class)
     private ResponseEntity<String> mimeTypeHandler(MimeTypeException exception) {
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(exception.getMessage());
+        return ResponseEntity.status(HttpStatus.UNSUPPORTED_MEDIA_TYPE).body(exception.getMessage());
     }
 
     @ExceptionHandler(UserStorageIsFullException.class)
     private ResponseEntity<String> userStorageIsFullHandler(UserStorageIsFullException exception) {
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(exception.getMessage());
+        return ResponseEntity.status(HttpStatus.CONFLICT).body(exception.getMessage());
     }
 
 
