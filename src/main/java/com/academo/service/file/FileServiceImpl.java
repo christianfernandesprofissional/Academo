@@ -9,10 +9,12 @@ import com.academo.service.subject.SubjectServiceImpl;
 import com.academo.service.user.IUserService;
 import com.academo.util.FileTransfer.service.DriveService;
 import com.academo.util.exceptions.FileTransfer.*;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.beans.Transient;
 import java.util.List;
 
 @Service
@@ -30,6 +32,7 @@ public class FileServiceImpl implements IFileService {
     @Autowired
     private DriveService driveService;
 
+    @Transactional
     @Override
     public File createFile(MultipartFile file, Integer userId, Integer subjectId) {
 
@@ -52,9 +55,7 @@ public class FileServiceImpl implements IFileService {
         f.setUser(user);
         f.setSubject(subject);
 
-        File createdFile = fileRepository.save(f);
-
-        return createdFile;
+        return fileRepository.save(f);
     }
 
     @Override

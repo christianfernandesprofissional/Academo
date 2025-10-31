@@ -111,6 +111,7 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
         return ResponseEntity.status(HttpStatus.FORBIDDEN).body("O usuário ainda não foi ativado. Confira seu email para ativar");
     }
 
+    //Files
     @ExceptionHandler(FileSizeException.class)
     private ResponseEntity<String> fileSizeHandler(FileSizeException exception) {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(exception.getMessage());
