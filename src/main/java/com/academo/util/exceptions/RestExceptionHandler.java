@@ -4,6 +4,7 @@ import com.academo.model.User;
 import com.academo.security.service.TokenService;
 import com.academo.service.user.IUserService;
 import com.academo.service.user.UserServiceImpl;
+import com.academo.util.exceptions.FileTransfer.*;
 import com.academo.util.exceptions.activity.ActivityExistsException;
 import com.academo.util.exceptions.activity.ActivityNotFoundException;
 import com.academo.util.exceptions.activityType.ActivityTypeExistsException;
@@ -97,7 +98,7 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
     @ExceptionHandler(UserIsNotActiveException.class)
     private ResponseEntity<String> userIsNotActiveHandler(UserIsNotActiveException exception) {
         User user = exception.getUser();
-        if(!user.getTokenExpiresAt().isAfter(LocalDateTime.now())) {
+        if (!user.getTokenExpiresAt().isAfter(LocalDateTime.now())) {
             LocalDateTime expiresAt = LocalDateTime.now().plusMinutes(30).plusSeconds(20).atOffset(ZoneOffset.of("-03:00")).toLocalDateTime();
             user.setTokenExpiresAt(expiresAt);
             userService.update(user);
@@ -106,4 +107,35 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
         }
         return ResponseEntity.status(HttpStatus.FORBIDDEN).body("O usuário ainda não foi ativado. Confira seu email para ativar");
     }
+
+    //Files
+    @ExceptionHandler(FileSizeException.class)
+    private ResponseEntity<String> fileSizeHandler(FileSizeException exception) {
+        return ResponseEntity.status(HttpStatus.PAYLOAD_TOO_LARGE).body(exception.getMessage());
+    }
+
+    @ExceptionHandler(FileNotFoundException.class)
+    private ResponseEntity<String> fileSizeHandler(FileNotFoundException exception) {
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(exception.getMessage());
+    }
+
+    @ExceptionHandler(MimeTypeException.class)
+    private ResponseEntity<String> mimeTypeHandler(MimeTypeException exception) {
+        return ResponseEntity.status(HttpStatus.UNSUPPORTED_MEDIA_TYPE).body(exception.getMessage());
+    }
+
+    @ExceptionHandler(UserStorageIsFullException.class)
+    private ResponseEntity<String> userStorageIsFullHandler(UserStorageIsFullException exception) {
+        return ResponseEntity.status(HttpStatus.CONFLICT).body(exception.getMessage());
+    }
+
+    @ExceptionHandler(FileStorageException.class)
+    private ResponseEntity<String> userStorageIsFullHandler(FileStorageException exception) {
+        // Se tiver erro de autenticação do google, apague o diretório tokens, e reinicie a aplicação
+        //isso vai fazer a aplicação gerar o link de login do google novamente
+        exception.printStackTrace();
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                .body(exception.getMessage());
+    }
+
 }

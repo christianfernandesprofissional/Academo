@@ -41,7 +41,7 @@ public class SubjectServiceImpl implements ISubjectService {
 
     @Override
     public Subject findById(Integer subjectId) {
-        return subjectRepository.findById(subjectId).orElse(null);
+        return subjectRepository.findById(subjectId).orElseThrow(SubjectNotFoundException::new);
     }
 
     @Override

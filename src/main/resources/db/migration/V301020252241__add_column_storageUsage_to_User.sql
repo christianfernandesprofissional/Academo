@@ -1,0 +1,2 @@
+ALTER TABLE tb_users
+ADD COLUMN storage_usage BIGINT DEFAULT 0;
