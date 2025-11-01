@@ -16,10 +16,13 @@ public class Activity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
-    private int id;
+    private Integer id;
 
-    @Column(name = "date")
-    private LocalDate date;
+    @Column(name = "activity_date")
+    private LocalDate activityDate;
+
+    @Column(name = "notification_date")
+    private LocalDate notificationDate;
 
     @Column(name = "name")
     private String name;
@@ -28,7 +31,7 @@ public class Activity {
     private String description;
 
     @Column(name = "value")
-    private double value;
+    private Double value;
 
     @ManyToOne
     @JoinColumn(name = "user_id")
@@ -55,14 +58,16 @@ public class Activity {
     public Activity(ActivityPostDTO dto){
         this.name = dto.name();
         this.description = dto.description();
-        this.date = dto.date();
+        this.activityDate = dto.activityDate();
+        this.notificationDate = dto.notificationDate();
     }
 
     public Activity(ActivityPutDTO dto){
         this.id = dto.id();
         this.name = dto.name();
         this.description = dto.description();
-        this.date = dto.date();
+        this.activityDate = dto.activityDate();
+        this.notificationDate = dto.notificationDate();
     }
 
     public int getId() {
@@ -73,12 +78,12 @@ public class Activity {
         this.id = id;
     }
 
-    public LocalDate getDate() {
-        return date;
+    public LocalDate getActivityDate() {
+        return activityDate;
     }
 
-    public void setDate(LocalDate date) {
-        this.date = date;
+    public void setActivityDate(LocalDate activity_date) {
+        this.activityDate = activity_date;
     }
 
     public String getName() {
@@ -142,5 +147,13 @@ public class Activity {
 
     public void setValue(double value) {
         this.value = value;
+    }
+
+    public LocalDate getNotificationDate() {
+        return notificationDate;
+    }
+
+    public void setNotificationDate(LocalDate notification_date) {
+        this.notificationDate = notification_date;
     }
 }

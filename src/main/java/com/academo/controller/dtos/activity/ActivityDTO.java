@@ -4,7 +4,8 @@ import java.time.LocalDate;
 
 public record ActivityDTO(
         Integer id,
-        LocalDate date,
+        LocalDate notificationDate,
+        LocalDate activityDate,
         String name,
         String description,
         String subjectName,

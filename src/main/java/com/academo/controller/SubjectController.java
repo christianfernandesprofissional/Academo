@@ -35,6 +35,22 @@ public class SubjectController {
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
+    @GetMapping("/by-group")
+    public ResponseEntity<List<SubjectDTO>> getByGroup(Authentication authentication, @RequestParam Integer groupId) {
+        Integer userId = ((AuthUser) authentication.getPrincipal()).getUser().getId();
+        List<SubjectDTO> subjects = service.findByGroup(groupId)
+                .stream()
+                .map(s -> new SubjectDTO(
+                        s.getId(),
+                        s.getName(),
+                        s.getDescription(),
+                        s.getIsActive(),
+                        s.getCreatedAt(),
+                        s.getUpdatedAt())).toList();
+
+        return ResponseEntity.ok(subjects);
+    }
+
     @GetMapping("/all")
     public ResponseEntity<List<SubjectDTO>> getSubjects(Authentication authentication) {
         Integer userId = ((AuthUser) authentication.getPrincipal()).getUser().getId();
@@ -43,7 +59,10 @@ public class SubjectController {
                 .map(g -> new SubjectDTO(
                         g.getId(),
                         g.getName(),
-                        g.getDescription())).toList();
+                        g.getDescription(),
+                        g.getIsActive(),
+                        g.getCreatedAt(),
+                        g.getUpdatedAt())).toList();
         return ResponseEntity.ok(subjects);
     }
 
@@ -51,7 +70,7 @@ public class SubjectController {
     public ResponseEntity<SubjectDTO> getSubject(Authentication authentication, @RequestParam Integer subjectId) {
         Integer userId = ((AuthUser) authentication.getPrincipal()).getUser().getId();
         Subject subject = service.getSubjectByIdAndUserId(userId, subjectId);
-        SubjectDTO subjectDTO = new SubjectDTO(subject.getId(), subject.getName(), subject.getDescription());
+        SubjectDTO subjectDTO = new SubjectDTO(subject.getId(), subject.getName(), subject.getDescription(), subject.getIsActive(), subject.getCreatedAt(), subject.getUpdatedAt());
         return ResponseEntity.ok(subjectDTO);
     }
 
@@ -64,9 +83,9 @@ public class SubjectController {
     }
 
     @DeleteMapping
-    public ResponseEntity<Activity> deleteActivity(Authentication authentication, @RequestParam Integer activityId) {
+    public ResponseEntity<Activity> deleteActivity(Authentication authentication, @RequestParam Integer subjectId) {
         Integer userId = ((AuthUser) authentication.getPrincipal()).getUser().getId();
-        service.deleteSubject(userId, activityId);
+        service.deleteSubject(userId, subjectId);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 

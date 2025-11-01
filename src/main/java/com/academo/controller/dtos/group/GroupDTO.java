@@ -9,5 +9,6 @@ public record GroupDTO (
         Integer id,
         String name,
         String description,
+        Boolean isActive,
         List<SubjectDTO> subjects
 ){}

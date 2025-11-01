@@ -35,13 +35,19 @@ public class User {
     @Column(name = "is_active", columnDefinition = "default false")
     private Boolean isActive;
 
+    @Column(name = "token_expires_at")
+    private LocalDateTime tokenExpiresAt;
+
+    @Column(name = "storage_usage")
+    private Long storageUsage;
+
     public User() {}
 
     public User(String name, String password, String email) {
         this.name = name;
         this.password = password;
         this.email = email;
-        this.isActive = true;
+        this.isActive = false;
     }
 
     public Integer getId() {
@@ -88,6 +94,26 @@ public class User {
 
     public void setUpdatedAt(LocalDateTime updatedAt) {
         this.updatedAt = updatedAt;
+    }
+
+    public void setIsActive(Boolean active){this.isActive = active;}
+
+    public Boolean getIsActive(){return isActive;}
+
+    public LocalDateTime getTokenExpiresAt() {
+        return tokenExpiresAt;
+    }
+
+    public void setTokenExpiresAt(LocalDateTime tokenExpiresAt) {
+        this.tokenExpiresAt = tokenExpiresAt;
+    }
+
+    public Long getStorageUsage() {
+        return this.storageUsage;
+    }
+
+    public void setStorageUsage(Long storageUsage) {
+        this.storageUsage = storageUsage;
     }
 
     @Override

@@ -12,7 +12,9 @@ import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 @Service
 public class GroupServiceImpl implements IGroupService {
@@ -80,6 +82,20 @@ public class GroupServiceImpl implements IGroupService {
 
         group.getSubjects().remove(subject);
         return groupRepository.save(group);
+    }
+
+    @Override
+    public Group associateSubjects(Integer userId, Integer groupId, List<Integer> subjectsIds) {
+        Group group = groupRepository.findById(groupId).orElseThrow(GroupNotFoundException::new);
+        List<Subject> subjects = group.getSubjects();
+        for(Integer id : subjectsIds) {
+            Subject subject = subjectService.findById(id);
+            if(subject != null) {
+                subjects.add(subject);
+            }
+        }
+        group.setSubjects(subjects);
+        return group;
     }
 
     /**

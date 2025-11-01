@@ -28,13 +28,13 @@ public class Subject {
     private User user;
 
     @Column(name = "is_active")
-    private boolean isActive;
+    private Boolean isActive;
 
-    @Column(name = "created_at")
+    @Column(name = "created_at", updatable = false)
     @CreationTimestamp
     private LocalDateTime createdAt;
 
-    @Column(name = "updated_at", updatable = false)
+    @Column(name = "updated_at")
     @UpdateTimestamp
     private LocalDateTime updatedAt;
 
@@ -42,17 +42,32 @@ public class Subject {
     @JsonIgnore
     private List<Group> groups;
 
+    @OneToMany(mappedBy = "subject",
+            cascade = CascadeType.ALL,
+            orphanRemoval = true)
+    @JsonIgnore 
+    private List<Activity> activities;
+
+    @OneToMany(mappedBy = "subject",
+             cascade = CascadeType.ALL,
+             orphanRemoval = true)
+    @JsonIgnore
+    private List<File> files;
+
     public Subject() {
+        setIsActive(true);
     }
 
     public Subject(String name, String description) {
         this.name = name;
         this.description = description;
+        setIsActive(true);
     }
     public Subject(SubjectDTO subjectDTO) {
         this.id = subjectDTO.id();
         this.name = subjectDTO.name();
         this.description = subjectDTO.description();
+        this.isActive = subjectDTO.isActive();
     }
     public int getId() {
         return id;
@@ -86,11 +101,11 @@ public class Subject {
         this.user = user;
     }
 
-    public boolean isActive() {
+    public Boolean getIsActive() {
         return isActive;
     }
 
-    public void setActive(boolean active) {
+    public void setIsActive(Boolean active) {
         isActive = active;
     }
 

@@ -1,5 +1,7 @@
 package com.academo.service.activity;
 
+import com.academo.controller.dtos.activity.ActivityNotificationDTO;
+import com.academo.controller.dtos.notification.NotificationDTO;
 import com.academo.model.Activity;
 import com.academo.model.ActivityType;
 import com.academo.model.Subject;
@@ -10,9 +12,11 @@ import com.academo.service.subject.SubjectServiceImpl;
 import com.academo.service.user.UserServiceImpl;
 import com.academo.util.exceptions.NotAllowedInsertionException;
 import com.academo.util.exceptions.activity.ActivityNotFoundException;
+import com.academo.util.notification.SendNotifications;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @Service
@@ -78,11 +82,15 @@ public  class ActivityServiceImp implements IActivityService{
     private Activity fillActivity(Activity activity, Integer userId, Integer activityTypeId, Integer subjectId){
         User user = userService.findById(userId);
         ActivityType activityType = activityTypeService.findByIdAndUserId(activityTypeId, userId);
-        Subject subject = subjectService.getSubjectByIdAndUserId(userId, subjectId);
+        Subject subject = subjectService.getSubjectByIdAndUserId(subjectId, userId);
         activity.setActivityType(activityType);
         activity.setSubject(subject);
         activity.setUser(user);
         return activity;
+    }
+
+    public List<NotificationDTO> teste(){
+        return activityRepository.searchNotificationByDate(LocalDate.now());
     }
 
 }

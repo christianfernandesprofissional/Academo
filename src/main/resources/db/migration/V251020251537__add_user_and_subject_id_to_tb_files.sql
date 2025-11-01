@@ -1,0 +1,3 @@
+ALTER TABLE tb_files
+ADD user_id INTEGER NOT NULL,
+ADD subject_id INTEGER NOT NULL;

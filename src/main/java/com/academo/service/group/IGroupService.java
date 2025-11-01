@@ -13,5 +13,6 @@ public interface IGroupService{
     public void deleteGroup(Integer userId, Integer groupId);
     public Group addSubjectToGroup(Integer userId, Integer groupId, Integer SubjectId);
     public Group deleteSubjectFromGroup(Integer userId, Integer groupId, Integer SubjectId);
+    public Group associateSubjects(Integer userId, Integer groupId, List<Integer> subjectsIds);
 
 }

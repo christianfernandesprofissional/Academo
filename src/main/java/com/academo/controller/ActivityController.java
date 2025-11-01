@@ -3,11 +3,14 @@ package com.academo.controller;
 import com.academo.controller.dtos.activity.ActivityDTO;
 import com.academo.controller.dtos.activity.ActivityPostDTO;
 import com.academo.controller.dtos.activity.ActivityPutDTO;
+import com.academo.controller.dtos.notification.NotificationDTO;
 import com.academo.model.Activity;
 import com.academo.security.authuser.AuthUser;
 import com.academo.service.activity.ActivityServiceImp;
 import com.academo.util.exceptions.activity.ActivityExistsException;
 import com.academo.util.exceptions.activity.ActivityNotFoundException;
+import com.academo.util.notification.SendNotifications;
+import jakarta.mail.MessagingException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -24,6 +27,9 @@ public class ActivityController {
     @Autowired
     private ActivityServiceImp  activityService;
 
+    @Autowired
+    private SendNotifications sendNotifications;
+
     @GetMapping("/all")
     public ResponseEntity<List<ActivityDTO>> getActivities(Authentication authentication) {
        Integer userId = ((AuthUser) authentication.getPrincipal()).getUser().getId();
@@ -31,7 +37,8 @@ public class ActivityController {
                .stream()
                .map(a -> new ActivityDTO(
                        a.getId(),
-                       a.getDate(),
+                       a.getNotificationDate(),
+                       a.getActivityDate(),
                        a.getName(),
                        a.getDescription(),
                        a.getSubject() != null ? a.getSubject().getName() : null,
@@ -71,5 +78,10 @@ public class ActivityController {
         Integer userId = ((AuthUser) authentication.getPrincipal()).getUser().getId();
         activityService.deleteActivity(userId,activityId);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+    }
+
+    @GetMapping("/teste")
+    public void teste(Authentication authentication) throws MessagingException {
+        sendNotifications.sendEmails(activityService.teste());
     }
 }
