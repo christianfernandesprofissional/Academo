@@ -6,6 +6,7 @@ import com.academo.model.User;
 import com.academo.security.authuser.AuthUser;
 import com.academo.service.file.IFileService;
 import com.academo.util.FileTransfer.service.DriveService;
+import org.apache.coyote.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.http.HttpHeaders;
@@ -17,6 +18,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.net.URI;
+import java.util.List;
 
 @RestController
 @RequestMapping("/files")
@@ -71,6 +73,21 @@ public class FileController {
             Integer userId = ((AuthUser) authentication.getPrincipal()).getUser().getId();
             fileService.deleteFile(uuid, userId);
             return ResponseEntity.ok("Arquivo deletado com sucesso!");
+    }
+
+
+    @GetMapping
+    public ResponseEntity<List<FileDTO>> getFiles(@RequestParam Integer subjectId){
+        List<FileDTO> files = fileService.findAllFilesBySubjectId(subjectId).stream()
+                .map( file -> new FileDTO(
+                        file.getUuid(),
+                        file.getFileName(),
+                        file.getPath(),
+                        file.getFileType(),
+                        file.getSize(),
+                        file.getSubject().getId(),
+                        file.getCreatedAt())).toList();
+        return ResponseEntity.ok(files);
     }
 
 

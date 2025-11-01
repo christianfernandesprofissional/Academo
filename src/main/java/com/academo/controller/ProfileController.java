@@ -23,6 +23,7 @@ public class ProfileController {
     public ResponseEntity<Profile> getProfile(Authentication authentication) {
         Integer userId = ((AuthUser) authentication.getPrincipal()).getUser().getId();
         Profile profile = service.findById(userId);
+        profile.setUsageStorage(((AuthUser) authentication.getPrincipal()).getUser().getStorageUsage());
         return ResponseEntity.ok(profile);
     }
 
