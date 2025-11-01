@@ -25,6 +25,8 @@ public class FileController {
     @Autowired
     private IFileService fileService;
 
+    @Autowired
+    private DriveService driveService;
 
     @PostMapping("/upload-file")
     public ResponseEntity<FileDTO> uploadFile(@RequestParam("file") MultipartFile file, @RequestParam("subjectId") Integer subjectId, Authentication authentication){
@@ -45,35 +47,31 @@ public class FileController {
         return ResponseEntity.created(uri).body(fileDto);
     }
 
-//    @GetMapping("/download/{fileId}")
-//    public ResponseEntity<ByteArrayResource> downloadFile(@PathVariable String fileId, Authentication authentication) {
-//        DriveService.DownloadedFile downloaded = null;
-//        try {
-//            downloaded = driveService.getFile(fileId);
-//        } catch (Exception e) {
-//            throw new RuntimeException(e);
-//        }
-//
-//        ByteArrayResource resource = new ByteArrayResource(downloaded.content());
-//
-//        String mimeType = downloaded.mimeType() != null ? downloaded.mimeType() : MediaType.APPLICATION_OCTET_STREAM_VALUE;
-//
-//        return ResponseEntity.ok()
-//                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + downloaded.name() + "\"")
-//                .contentType(MediaType.parseMediaType(mimeType))
-//                .body(resource);
-//    }
-//
-//    @DeleteMapping("/delete/{fileId}")
-//    public ResponseEntity<String> deleteFile(@PathVariable String fileId, Authentication authentication) {
-//        try {
-//            driveService.deleteFile(fileId);
-//            return ResponseEntity.ok("Arquivo deletado com sucesso!");
-//        } catch (Exception e) {
-//            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-//                    .body("Erro ao deletar o arquivo: " + e.getMessage());
-//        }
-//    }
+    @GetMapping("/download/{fileId}")
+    public ResponseEntity<ByteArrayResource> downloadFile(@PathVariable String fileId) {
+        DriveService.DownloadedFile downloaded = null;
+        try {
+            downloaded = driveService.getFile(fileId);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+
+        ByteArrayResource resource = new ByteArrayResource(downloaded.content());
+
+        String mimeType = downloaded.mimeType() != null ? downloaded.mimeType() : MediaType.APPLICATION_OCTET_STREAM_VALUE;
+
+        return ResponseEntity.ok()
+                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + downloaded.name() + "\"")
+                .contentType(MediaType.parseMediaType(mimeType))
+                .body(resource);
+    }
+
+    @DeleteMapping("/delete/{uuid}")
+    public ResponseEntity<String> deleteFile(@PathVariable String uuid, Authentication authentication) {
+            Integer userId = ((AuthUser) authentication.getPrincipal()).getUser().getId();
+            fileService.deleteFile(uuid, userId);
+            return ResponseEntity.ok("Arquivo deletado com sucesso!");
+    }
 
 
 

@@ -10,9 +10,12 @@ import com.academo.util.FileTransfer.service.DriveService;
 import com.academo.util.exceptions.FileTransfer.*;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.Set;
 
@@ -62,14 +65,14 @@ public class FileServiceImpl implements IFileService {
         try {
             driveFileId = driveService.uploadFile(file);
         } catch (Exception e) {
-            throw new FileStorageException();
+            throw new FileStorageException("Erro ao fazer o upload do arquivo!");
         }
 
         Long newStorage = user.getStorageUsage() + file.getSize();
         user.setStorageUsage(newStorage);
         userService.update(user);
 
-        String completePath = "http://localhost:8080/download/" + driveFileId;
+        String completePath = "http://localhost:8080/files/download/" + driveFileId;
         File f = new File(file.getOriginalFilename(), completePath, file.getContentType(), file.getSize());
         f.setUser(user);
         f.setSubject(subject);
@@ -84,18 +87,28 @@ public class FileServiceImpl implements IFileService {
 
     @Override
     public List<File> findAllFilesBySubjectId(Integer subjectId) {
+        subjectService.findById(subjectId);
         return fileRepository.findAllBySubjectId(subjectId).orElseThrow(FileNotFoundException::new);
     }
 
+    @Transactional
     @Override
-    public void deleteFile(String uuid, String path) {
+    public void deleteFile(String uuid, Integer userId) {
+        User user = userService.findById(userId);
         File file = fileRepository.findById(uuid).orElseThrow(FileNotFoundException::new);
-        try {
-            driveService.deleteFile(uuid);
-        }catch (Exception e) {
-            //
-        }
 
+        long newUserStorage = user.getStorageUsage() - file.getSize();
+        user.setStorageUsage(newUserStorage);
+
+        String drivePath = file.getPath().substring(37);
+
+        fileRepository.deleteById(uuid);
+        userService.update(user);
+        try {
+            driveService.deleteFile(drivePath);
+        } catch (Exception e) {
+           throw new FileStorageException("Erro ao deletar arquivo!");
+        }
     }
 
 
