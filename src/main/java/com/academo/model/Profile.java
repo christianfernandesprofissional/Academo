@@ -36,6 +36,9 @@ public class Profile {
     @UpdateTimestamp
     private LocalDateTime updatedAt;
 
+    @Transient
+    private Long usageStorage;
+
     public Profile() {
     }
 
@@ -108,4 +111,8 @@ public class Profile {
     public void setCreatedAt(LocalDateTime createdAt) {
         this.createdAt = createdAt;
     }
+
+    public Long getUsageStorage() { return usageStorage; }
+
+    public void setUsageStorage(Long usageStorage) { this.usageStorage = usageStorage; }
 }
