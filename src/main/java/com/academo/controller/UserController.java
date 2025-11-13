@@ -28,7 +28,7 @@ import java.time.ZoneOffset;
 
 @RestController
 @RequestMapping("/auth")
-@Tag(name = "Usuário")
+@Tag(name = "Usuários")
 public class UserController {
 
     @Autowired
@@ -82,7 +82,7 @@ public class UserController {
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
-    @Operation(summary = "Realiza a ativação da conta")
+    @Operation(summary = "Realiza a ativação da conta", method = "POST")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Conta ativada com sucesso"),
             @ApiResponse(responseCode = "404", description = "Usuário não encontrado"),
