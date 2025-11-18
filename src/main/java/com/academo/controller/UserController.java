@@ -58,8 +58,9 @@ public class UserController {
         Authentication auth = authenticationManager.authenticate(userPass);
 
         var token = tokenService.generateLoginToken((AuthUser) auth.getPrincipal());
-
-        return ResponseEntity.ok(new LoginResponseDTO(token));
+        User u = userRepository.findByEmail(user.username());
+        if(u == null) u = userRepository.findByName(user.username());
+        return ResponseEntity.ok(new LoginResponseDTO(token, u.getId(), u.getName()));
     }
 
     @Operation(summary = "Cadastra usuário no sistema", method = "POST")

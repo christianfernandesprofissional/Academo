@@ -94,10 +94,13 @@ public class SubjectController {
         @ApiResponse(responseCode = "400", description = "Erro ao tentar recuperar matéria"),
         @ApiResponse(responseCode = "404", description = "Nenhuma matéria encontrada com este ID")
     })
-    @GetMapping
+    @GetMapping("one")
     public ResponseEntity<SubjectDTO> getSubject(Authentication authentication, @RequestParam Integer subjectId) {
         Integer userId = ((AuthUser) authentication.getPrincipal()).getUser().getId();
-        Subject subject = service.getSubjectByIdAndUserId(userId, subjectId);
+        System.out.println("USER ID: " + userId);
+        System.out.println("SUBJECT ID: " + subjectId);
+        Subject subject = service.getSubjectByIdAndUserId(subjectId, userId);
+        System.out.println("SUBJECT" + subject);
         SubjectDTO subjectDTO = new SubjectDTO(subject.getId(), subject.getName(), subject.getDescription(), subject.getIsActive(), subject.getCreatedAt(), subject.getUpdatedAt());
         return ResponseEntity.ok(subjectDTO);
     }
