@@ -52,6 +52,7 @@ public class ActivityController {
                        a.getNotificationDate(),
                        a.getActivityDate(),
                        a.getName(),
+                       a.getValue(),
                        a.getDescription(),
                        a.getSubject() != null ? a.getSubject().getName() : null,
                        a.getActivityType() != null ? a.getActivityType().getName() : null
@@ -72,6 +73,24 @@ public class ActivityController {
         return ResponseEntity.ok(activity);
     }
 
+    @GetMapping("/by-subject")
+    public ResponseEntity<List<ActivityDTO>> getActivitiesBySubject(Authentication authentication, @RequestParam Integer subjectId) {
+        Integer userId = ((AuthUser) authentication.getPrincipal()).getUser().getId();
+        List<ActivityDTO> activities =activityService.getBySubjectId(subjectId)
+                .stream()
+                .map(a -> new ActivityDTO(
+                        a.getId(),
+                        a.getNotificationDate(),
+                        a.getActivityDate(),
+                        a.getName(),
+                        a.getValue(),
+                        a.getDescription(),
+                        a.getSubject() != null ? a.getSubject().getName() : null,
+                        a.getActivityType() != null ? a.getActivityType().getName() : null
+                )).toList();
+        return ResponseEntity.ok(activities);
+    }
+
     @Operation(summary = "Cadastra uma nova atividade", method = "POST")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "201", description = "Atividade cadastrada com sucesso"),
@@ -79,7 +98,7 @@ public class ActivityController {
     })
     @PostMapping
     public ResponseEntity<Activity> createActivity(Authentication authentication, @RequestBody ActivityPostDTO activityPostDto) {
-        if(activityService.existsActivityByName(activityPostDto.name())) throw new ActivityExistsException();
+        //if(activityService.existsActivityByName(activityPostDto.name())) throw new ActivityExistsException();
         Integer userId = ((AuthUser) authentication.getPrincipal()).getUser().getId();
         Activity activity = new Activity(activityPostDto);
         Activity created = activityService.insertActivity(activity, userId, activityPostDto.activityTypeId(), activityPostDto.subjectId());
