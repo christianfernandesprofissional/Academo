@@ -10,5 +10,6 @@ public record ActivityDTO(
         Double value,
         String description,
         String subjectName,
+        Integer activityTypeId,
         String ActivityType
 ) {}

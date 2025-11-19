@@ -61,6 +61,7 @@ public class Activity {
         this.activityDate = dto.activityDate();
         this.notificationDate = dto.notificationDate();
         this.value = dto.value();
+
     }
 
     public Activity(ActivityPutDTO dto){
@@ -69,6 +70,7 @@ public class Activity {
         this.description = dto.description();
         this.activityDate = dto.activityDate();
         this.notificationDate = dto.notificationDate();
+        this.value = dto.value();
     }
 
     public int getId() {

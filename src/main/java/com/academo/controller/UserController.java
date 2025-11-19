@@ -75,6 +75,7 @@ public class UserController {
 
         String encryptedPassword = new BCryptPasswordEncoder().encode(register.password());
         User user = new  User(register.name(), encryptedPassword,register.email());
+        user.setStorageUsage(0L);
         LocalDateTime expiresAt = LocalDateTime.now().plusMinutes(30).plusSeconds(20).atOffset(ZoneOffset.of("-03:00")).toLocalDateTime();
         user.setTokenExpiresAt(expiresAt);
         User createdUser = userRepository.save(user);
