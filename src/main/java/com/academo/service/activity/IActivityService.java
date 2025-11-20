@@ -12,4 +12,5 @@ public interface IActivityService {
     void deleteActivity(Integer userId,Integer activityId);
     Boolean existsActivityByName(String activityName);
     Boolean existsActivityById(Integer id);
+    List<Activity> getBySubjectId(Integer subjectId);
 }

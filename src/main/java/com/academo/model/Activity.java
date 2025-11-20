@@ -60,6 +60,8 @@ public class Activity {
         this.description = dto.description();
         this.activityDate = dto.activityDate();
         this.notificationDate = dto.notificationDate();
+        this.value = dto.value();
+
     }
 
     public Activity(ActivityPutDTO dto){
@@ -68,6 +70,7 @@ public class Activity {
         this.description = dto.description();
         this.activityDate = dto.activityDate();
         this.notificationDate = dto.notificationDate();
+        this.value = dto.value();
     }
 
     public int getId() {
@@ -155,5 +158,22 @@ public class Activity {
 
     public void setNotificationDate(LocalDate notification_date) {
         this.notificationDate = notification_date;
+    }
+
+    @Override
+    public String toString() {
+        return "Activity{" +
+                "id=" + id +
+                ", activityDate=" + activityDate +
+                ", notificationDate=" + notificationDate +
+                ", name='" + name + '\'' +
+                ", description='" + description + '\'' +
+                ", value=" + value +
+                ", user=" + user +
+                ", subject=" + subject +
+                ", activityType=" + activityType +
+                ", createdAt=" + createdAt +
+                ", updatedAt=" + updatedAt +
+                '}';
     }
 }
