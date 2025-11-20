@@ -3,7 +3,10 @@ package com.academo.controller;
 import com.academo.controller.dtos.group.AssociateSubjectsDTO;
 import com.academo.controller.dtos.group.GroupDTO;
 import com.academo.controller.dtos.group.GroupPostDTO;
+import com.academo.controller.dtos.group.GroupPutDTO;
 import com.academo.controller.dtos.subject.SubjectDTO;
+import com.academo.service.subject.ISubjectService;
+import com.academo.service.subject.SubjectServiceImpl;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
@@ -27,6 +30,9 @@ public class GroupController {
     // Injeção de dependência da service
     @Autowired
     GroupServiceImpl groupService;
+
+    @Autowired
+    ISubjectService subjectService;
 
     @Operation(summary = "Recupera a lista de todos os grupos de um usuário", method = "GET")
     @ApiResponses(value = {
@@ -119,13 +125,18 @@ public class GroupController {
             @ApiResponse(responseCode = "404", description = "Nenhum grupo encontrado com este ID")
     })
     @PutMapping
-    public ResponseEntity<Group> updateGroup(Authentication authentication, @RequestBody GroupDTO groupDTO){
+    public ResponseEntity<Group> updateGroup(Authentication authentication, @RequestBody GroupPutDTO groupDTO){
         Integer userId = ((AuthUser) authentication.getPrincipal()).getUser().getId();
-        Group group = new Group(groupDTO.name(), groupDTO.description());
+        Group group = new Group();
+        group.setName(groupDTO.name());
+        group.setDescription(groupDTO.description());
         group.setIsActive(groupDTO.isActive());
         group.setId(groupDTO.id());
+        group.setSubjects(groupDTO.subjectsId().stream().map((s) -> subjectService.findById(s)).toList());
+
         Group saved = groupService.updateGroup(userId,group);
-        return ResponseEntity.ok().build();
+
+        return ResponseEntity.ok(saved);
     }
 
     @Operation(summary = "Remove um grupo", method = "DELETE")
