@@ -15,6 +15,7 @@ import com.academo.util.exceptions.subject.SubjectNotFoundException;
 import com.academo.util.exceptions.user.ExistingUserException;
 import com.academo.util.exceptions.user.UserIsNotActiveException;
 import com.academo.util.exceptions.user.UserNotFoundException;
+import com.academo.util.exceptions.user.WrongDataException;
 import com.academo.util.mailservice.JavaMailApp;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -88,6 +89,12 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
     private ResponseEntity<String> existingUserHandler(ExistingUserException exception) {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Este usuário já está cadastrado no sistema!");
     }
+
+    @ExceptionHandler(WrongDataException.class)
+    private ResponseEntity<String> wrongDataHandler(WrongDataException exception) {
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Usuário/Email ou Senha Inválidos!");
+    }
+
 
     //Inserção ou deleção de objetos que não pertecem ao usuário
     @ExceptionHandler(NotAllowedInsertionException.class)

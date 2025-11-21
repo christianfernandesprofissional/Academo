@@ -2,6 +2,7 @@ package com.academo.controller;
 
 import com.academo.controller.dtos.subject.SubjectDTO;
 import com.academo.controller.dtos.subject.SubjectPostDTO;
+import com.academo.service.activity.IActivityService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
@@ -26,10 +27,10 @@ import java.util.List;
 public class SubjectController {
 
     @Autowired
-    ISubjectService serviceI;
+    ISubjectService service;
 
     @Autowired
-    SubjectServiceImpl service;
+    IActivityService activityService;
 
     // A recuperação do Id do User por meio do PathVariable é temporária
     // Será implementado um Middleware para recuperação deste ID
@@ -98,7 +99,7 @@ public class SubjectController {
     public ResponseEntity<SubjectDTO> getSubject(Authentication authentication, @RequestParam Integer subjectId) {
         Integer userId = ((AuthUser) authentication.getPrincipal()).getUser().getId();
         Subject subject = service.getSubjectByIdAndUserId(subjectId, userId);
-        SubjectDTO subjectDTO = new SubjectDTO(subject.getId(), subject.getName(), subject.getDescription(), subject.getIsActive(), subject.getCreatedAt(), subject.getUpdatedAt());
+        SubjectDTO subjectDTO = new SubjectDTO(subject.getId(), subject.getName(), subject.getDescription(), subject.getIsActive(),subject.getCreatedAt(), subject.getUpdatedAt());
         return ResponseEntity.ok(subjectDTO);
     }
 
@@ -112,6 +113,7 @@ public class SubjectController {
     public ResponseEntity<SubjectDTO> updateSubject(Authentication authentication, @RequestBody SubjectDTO subjectDTO) {
         Integer userId = ((AuthUser) authentication.getPrincipal()).getUser().getId();
         Subject subject = new Subject(subjectDTO);
+        subject.setActivities(activityService.getBySubjectId(subjectDTO.id()));
         service.updateSubject(userId,subject);
         return ResponseEntity.ok().build();
     }
