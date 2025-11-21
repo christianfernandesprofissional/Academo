@@ -7,6 +7,7 @@ import com.academo.security.service.TokenService;
 import com.academo.service.profile.ProfileServiceImpl;
 import com.academo.util.exceptions.user.ExistingUserException;
 import com.academo.util.exceptions.user.UserNotFoundException;
+import com.academo.util.exceptions.user.WrongDataException;
 import com.academo.util.mailservice.JavaMailApp;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -54,13 +55,16 @@ public class UserController {
     })
     @PostMapping("/login")
     public ResponseEntity<LoginResponseDTO> login(@RequestBody UserAuthDTO user) {
-        UsernamePasswordAuthenticationToken userPass = new UsernamePasswordAuthenticationToken(user.username(), user.password());
-        Authentication auth = authenticationManager.authenticate(userPass);
-
-        var token = tokenService.generateLoginToken((AuthUser) auth.getPrincipal());
-        User u = userRepository.findByEmail(user.username());
-        if(u == null) u = userRepository.findByName(user.username());
-        return ResponseEntity.ok(new LoginResponseDTO(token, u.getId(), u.getName()));
+        try {
+            UsernamePasswordAuthenticationToken userPass = new UsernamePasswordAuthenticationToken(user.username(), user.password());
+            Authentication auth = authenticationManager.authenticate(userPass);
+            var token = tokenService.generateLoginToken((AuthUser) auth.getPrincipal());
+            User u = userRepository.findByEmail(user.username());
+            if(u == null) u = userRepository.findByName(user.username());
+            return ResponseEntity.ok(new LoginResponseDTO(token, u.getId(), u.getName()));
+        } catch (Exception e) {
+            throw new WrongDataException();
+        }
     }
 
     @Operation(summary = "Cadastra usuário no sistema", method = "POST")

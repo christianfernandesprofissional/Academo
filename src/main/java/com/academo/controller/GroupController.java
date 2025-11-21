@@ -182,7 +182,7 @@ public class GroupController {
             @ApiResponse(responseCode = "400", description = "Erro ao tentar remover matéria"),
             @ApiResponse(responseCode = "404", description = "Grupo ou matéria não encontrado")
     })
-    @DeleteMapping("/removeSubject")
+    @DeleteMapping("/remove-subject")
     public ResponseEntity<GroupDTO> removeSubjectFromGroup(Authentication authentication, @RequestParam Integer groupId, @RequestParam Integer subjectId){
         Integer userId = ((AuthUser) authentication.getPrincipal()).getUser().getId();
         Group group = groupService.deleteSubjectFromGroup(userId, groupId, subjectId);
