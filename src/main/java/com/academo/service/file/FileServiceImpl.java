@@ -72,7 +72,7 @@ public class FileServiceImpl implements IFileService {
         user.setStorageUsage(newStorage);
         userService.update(user);
 
-        String completePath = "http://localhost:8080/files/download/" + driveFileId;
+        String completePath = "files/download/" + driveFileId;
         File f = new File(file.getOriginalFilename(), completePath, file.getContentType(), file.getSize());
         f.setUser(user);
         f.setSubject(subject);
