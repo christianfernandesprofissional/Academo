@@ -8,6 +8,7 @@ public record ActivityPutDTO(
         LocalDate notificationDate,
         String name,
         String description,
+        Double value,
         Integer subjectId,
         Integer ActivityTypeId
 ) {}
