@@ -135,9 +135,4 @@ public class ActivityController {
         activityService.deleteActivity(userId,activityId);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
-
-//    @GetMapping("/teste")
-//    public void teste(Authentication authentication) throws MessagingException {
-//        sendNotifications.sendEmails(activityService.teste());
-//    }
 }
