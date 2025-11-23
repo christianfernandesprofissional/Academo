@@ -74,7 +74,6 @@ public  class ActivityServiceImp implements IActivityService{
 
     @Override
     public List<Activity> getBySubjectId(Integer subjectId) {
-        System.out.println("PASESEI POR AQUI TAMBÉM");
         return activityRepository.findAllBySubjectId(subjectId);
     }
 
